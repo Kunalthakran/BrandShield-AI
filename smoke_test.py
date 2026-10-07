@@ -34,7 +34,7 @@ assert r2['official_match'] is True
 assert r2['risk_level'] == 'SAFE'
 print(f"PASS 2: Official asset exclusion -> {r2['risk_level']} {r2['risk_score']}/100 (100% IMMUNITY)")
 
-# 2. Integration Tests via TestClient
+# 2. Integration Tests via TestClients
 client = TestClient(app)
 
 # Health endpoint
