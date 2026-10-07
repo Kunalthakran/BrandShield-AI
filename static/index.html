@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrandShield AI - Digital Risk Protection Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --border-focus: #3b82f6;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --primary-border: #bfdbfe;
+      
+      --critical-bg: #fef2f2;
+      --critical-text: #dc2626;
+      --critical-border: #fecaca;
+      
+      --high-bg: #fff7ed;
+      --high-text: #ea580c;
+      --high-border: #fed7aa;
+      
+      --medium-bg: #fefce8;
+      --medium-text: #ca8a04;
+      --medium-border: #fef08a;
+      
+      --safe-bg: #ecfdf5;
+      --safe-text: #059669;
+      --safe-border: #a7f3d0;
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, textarea, select {
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    /* Layout */
+    .app-container {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 24px 32px 64px;
+    }
+
+    /* Top Navigation Header */
+    .navbar {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-shield {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .brand-title h1 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hack-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .brand-title p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 15px;
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+      border: 1px solid transparent;
+      outline: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-demo {
+      background: #f0fdf4;
+      color: #166534;
+      border-color: #bbf7d0;
+    }
+    .btn-demo:hover {
+      background: #dcfce7;
+      border-color: #86efac;
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .btn-danger-outline {
+      background: #ffffff;
+      color: #dc2626;
+      border-color: #fecaca;
+    }
+    .btn-danger-outline:hover {
+      background: #fef2f2;
+    }
+
+    .btn-sm {
+      padding: 6px 11px;
+      font-size: 12.5px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Tabs Bar */
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 24px;
+      padding-bottom: 4px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      transition: color 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      background: transparent;
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px 3px 0 0;
+    }
+
+    /* KPI Summary Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--border);
+    }
+
+    .kpi-card.blue::before { background: var(--primary); }
+    .kpi-card.red::before { background: #ef4444; }
+    .kpi-card.orange::before { background: #f97316; }
+    .kpi-card.green::before { background: #10b981; }
+
+    .kpi-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .kpi-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .kpi-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .kpi-icon.blue { background: #eff6ff; color: #2563eb; }
+    .kpi-icon.red { background: #fef2f2; color: #dc2626; }
+    .kpi-icon.orange { background: #fff7ed; color: #ea580c; }
+    .kpi-icon.green { background: #ecfdf5; color: #059669; }
+
+    .kpi-value {
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.03em;
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Content Panels */
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Controls Bar */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-filter {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pill-filter:hover {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .pill-filter.active {
+      background: #eff6ff;
+      color: var(--primary);
+      border-color: #bfdbfe;
+    }
+
+    .search-input {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      width: 260px;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    /* Threat Cards & Table */
+    .threat-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: all 0.18s ease;
+      cursor: pointer;
+    }
+
+    .threat-card:hover {
+      border-color: #94a3b8;
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .threat-card.safe-border {
+      border-left: 4px solid #10b981;
+    }
+    .threat-card.medium-border {
+      border-left: 4px solid #eab308;
+    }
+    .threat-card.high-border {
+      border-left: 4px solid #f97316;
+    }
+    .threat-card.critical-border {
+      border-left: 4px solid #ef4444;
+    }
+
+    .threat-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .type-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .type-social { background: #e0e7ff; color: #4338ca; }
+    .type-app { background: #fef3c7; color: #92400e; }
+
+    .threat-meta h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .threat-meta p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .threat-signals {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .signal-item {
+      text-align: right;
+    }
+
+    .signal-item span {
+      display: block;
+      font-size: 11px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .signal-item b {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-critical {
+      background: var(--critical-bg);
+      color: var(--critical-text);
+      border: 1px solid var(--critical-border);
+    }
+    .badge-high {
+      background: var(--high-bg);
+      color: var(--high-text);
+      border: 1px solid var(--high-border);
+    }
+    .badge-medium {
+      background: var(--medium-bg);
+      color: var(--medium-text);
+      border: 1px solid var(--medium-border);
+    }
+    .badge-safe {
+      background: var(--safe-bg);
+      color: var(--safe-text);
+      border: 1px solid var(--safe-border);
+    }
+
+    .score-meter {
+      width: 76px;
+      text-align: center;
+    }
+
+    .score-meter-num {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .score-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    .fill-critical { background: #ef4444; }
+    .fill-high { background: #f97316; }
+    .fill-medium { background: #eab308; }
+    .fill-safe { background: #10b981; }
+
+    /* Form Styles */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+      color: var(--text);
+      background: #ffffff;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    textarea.form-control {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .helper-text {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Look-alike Lab Interactive Styles */
+    .lab-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      margin-top: 16px;
+    }
+
+    .preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .preset-chip {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .preset-chip:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    .lab-output {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-top: 18px;
+    }
+
+    .lab-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .lab-stat {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-sm);
+      padding: 12px;
+    }
+
+    .lab-stat span {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .lab-stat b {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .code-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      background: #f1f5f9;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: #0f172a;
+      display: inline-block;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      padding: 28px;
+      position: relative;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      color: var(--text-muted);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+    }
+
+    .modal-close-btn:hover {
+      background: #f1f5f9;
+      color: var(--text);
+    }
+
+    .evidence-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .evidence-item {
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      font-size: 13px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    /* Toast */
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    /* Empty states */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      background: #fafafa;
+    }
+
+    .empty-state h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 12px;
+    }
+
+    .empty-state p {
+      font-size: 13px;
+      max-width: 420px;
+      margin: 6px auto 18px;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-grid { grid-template-columns: 1fr; }
+      .navbar { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .nav-actions { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
+      .threat-card { flex-direction: column; align-items: flex-start; }
+      .threat-signals { width: 100%; justify-content: space-between; margin-top: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="brand-cluster">
+        <div class="logo-shield">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <h1>BrandShield AI <span class="hack-badge">HackXLerate 2026</span></h1>
+          <p>Detect impersonation. Protect your brand.</p>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn btn-demo" onclick="triggerSeedDemo()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          ⚡ Load Demo Data (Nike)
+        </button>
+        <button class="btn btn-secondary" onclick="exportCSV()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </button>
+        <button class="btn btn-danger-outline btn-sm" onclick="triggerResetDemo()" title="Reset database">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+          Reset
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('tab-threats', this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Threat Monitor & Scan
+      </button>
+      <button class="tab-btn" onclick="switchTab('tab-brand', this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Brand Profile & Ingestion
+      </button>
+      <button class="tab-btn" onclick="switchTab('tab-lab', this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31L4.69 15.6A2 2 0 0 0 6.13 19h11.74a2 2 0 0 0 1.44-3.4L14 9.31V2"/></svg>
+        Look-alike Lab (Req D)
+      </button>
+      <button class="tab-btn" onclick="switchTab('tab-audit', this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Executive Audit & Report
+      </button>
+    </nav>
+
+    <!-- TAB 1: THREAT MONITOR & SCAN -->
+    <section id="tab-threats">
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card blue">
+          <div class="kpi-header">
+            <span class="kpi-label">Assets Monitored</span>
+            <div class="kpi-icon blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
+          </div>
+          <div class="kpi-value" id="kpi-total">0</div>
+          <div class="kpi-sub">Total candidates under surveillance</div>
+        </div>
+
+        <div class="kpi-card red">
+          <div class="kpi-header">
+            <span class="kpi-label">Critical / High Threats</span>
+            <div class="kpi-icon red"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          </div>
+          <div class="kpi-value" id="kpi-threats">0</div>
+          <div class="kpi-sub">Requires active SOC takedown</div>
+        </div>
+
+        <div class="kpi-card orange">
+          <div class="kpi-header">
+            <span class="kpi-label">Suspicious Impersonators</span>
+            <div class="kpi-icon orange"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          </div>
+          <div class="kpi-value" id="kpi-suspicious">0</div>
+          <div class="kpi-sub">Medium risk / look-alike profiles</div>
+        </div>
+
+        <div class="kpi-card green">
+          <div class="kpi-header">
+            <span class="kpi-label">Official Protected Assets</span>
+            <div class="kpi-icon green"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          </div>
+          <div class="kpi-value" id="kpi-safe">0</div>
+          <div class="kpi-sub">Immune from false positives (0 Score)</div>
+        </div>
+      </div>
+
+      <!-- Main Scanning Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+              Continuous Impersonation Radar
+            </h2>
+            <p class="panel-desc">Real-time multi-signal detection across social platforms and mobile application repositories.</p>
+          </div>
+          <button class="btn btn-primary" id="btn-scan" onclick="triggerRunScan()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            Execute Threat Scan
+          </button>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <div class="filter-group">
+            <span style="font-size:12.5px; font-weight:600; color:var(--text-muted); margin-right:4px;">Filter Severity:</span>
+            <button class="pill-filter active" onclick="setFilter('ALL', this)">All Candidates (<span id="count-all">0</span>)</button>
+            <button class="pill-filter" onclick="setFilter('CRITICAL', this)">Critical (<span id="count-critical">0</span>)</button>
+            <button class="pill-filter" onclick="setFilter('HIGH', this)">High (<span id="count-high">0</span>)</button>
+            <button class="pill-filter" onclick="setFilter('MEDIUM', this)">Medium (<span id="count-medium">0</span>)</button>
+            <button class="pill-filter" onclick="setFilter('SAFE', this)">Safe (<span id="count-safe">0</span>)</button>
+          </div>
+
+          <input type="text" id="search-threats" class="search-input" placeholder="Search by name, handle, publisher..." oninput="renderThreatList()">
+        </div>
+
+        <!-- Threat List Stream -->
+        <div id="threat-list-container">
+          <div class="empty-state">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" color="#94a3b8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <h3>Ready for Threat Assessment</h3>
+            <p>Click "⚡ Load Demo Data (Nike)" above or click "Execute Threat Scan" to evaluate all candidate vectors.</p>
+            <button class="btn btn-primary btn-sm" onclick="triggerSeedDemo()">Load Demo Data & Scan</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: BRAND PROFILE & INGESTION -->
+    <section id="tab-brand" class="hidden">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+        <!-- Brand Profile Configuration -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Protected Brand Identity
+              </h2>
+              <p class="panel-desc">Define legitimate assets. Verified official assets receive strict whitelist immunity.</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Brand Name *</label>
+            <input type="text" id="brand-name" class="form-control" placeholder="e.g. Nike">
+          </div>
+
+          <div class="form-group">
+            <label>Official Website</label>
+            <input type="url" id="brand-website" class="form-control" placeholder="https://www.nike.com">
+          </div>
+
+          <div class="form-group">
+            <label>Official Social Handles (comma separated)</label>
+            <input type="text" id="brand-social" class="form-control" placeholder="@nike, @nikeindia, @nikerunning">
+            <p class="helper-text">Candidates matching these handles are cryptographically whitelisted with 0 risk score.</p>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Official Mobile App Name</label>
+              <input type="text" id="brand-app" class="form-control" placeholder="Nike">
+            </div>
+            <div class="form-group">
+              <label>Official Developer / Publisher</label>
+              <input type="text" id="brand-publisher" class="form-control" placeholder="Nike, Inc.">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Official Brand Logo URL (optional)</label>
+            <input type="url" id="brand-logo" class="form-control" placeholder="https://...">
+          </div>
+
+          <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" onclick="saveBrandProfile()">
+            Save Brand Profile
+          </button>
+        </div>
+
+        <!-- Live Ingestion Adapters -->
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg>
+                  Real Source Ingestion
+                </h2>
+                <p class="panel-desc">Ingest live metadata from public stores and social networks without paid API keys.</p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Google Play Store Listing URL</label>
+              <div style="display:flex; gap:8px;">
+                <input type="url" id="ingest-play-url" class="form-control" placeholder="https://play.google.com/store/apps/details?id=com.example.app">
+                <button class="btn btn-secondary" onclick="ingestGooglePlay()" style="flex-shrink:0;">Import App</button>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 16px;">
+              <label>Public Social Profile URL (Instagram, X, etc.)</label>
+              <div style="display:flex; gap:8px;">
+                <input type="url" id="ingest-social-url" class="form-control" placeholder="https://www.instagram.com/fake_support/">
+                <button class="btn btn-secondary" onclick="ingestSocial()" style="flex-shrink:0;">Import Profile</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Manual Candidate -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Add Custom Candidate
+                </h2>
+                <p class="panel-desc">Register custom suspicious handles or mobile app packages.</p>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Type</label>
+                <select id="cand-type" class="form-control">
+                  <option value="social">Social Profile</option>
+                  <option value="app">Mobile App</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Candidate Name *</label>
+                <input type="text" id="cand-name" class="form-control" placeholder="e.g. Nike Support 24/7">
+              </div>
+              <div class="form-group">
+                <label>Handle / Package ID</label>
+                <input type="text" id="cand-ident" class="form-control" placeholder="@nike_help or com.fake.app">
+              </div>
+              <div class="form-group">
+                <label>Publisher / Author</label>
+                <input type="text" id="cand-pub" class="form-control" placeholder="e.g. Unknown Developer">
+              </div>
+              <div class="form-group full-width">
+                <label>Bio / App Description</label>
+                <textarea id="cand-desc" class="form-control" placeholder="Describe profile or store listing bio..."></textarea>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="addManualCandidate()">+ Add Candidate to Monitor</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Registered Candidates List Table -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">
+              Monitored Candidates Registry (<span id="cand-registry-count">0</span>)
+            </h2>
+            <p class="panel-desc">All candidate records persisted in local / Render PostgreSQL database.</p>
+          </div>
+        </div>
+
+        <div id="candidates-table-container"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: LOOK-ALIKE LAB (REQUIREMENT D) -->
+    <section id="tab-lab" class="hidden">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31L4.69 15.6A2 2 0 0 0 6.13 19h11.74a2 2 0 0 0 1.44-3.4L14 9.31V2"/></svg>
+              Look-alike Name Detection Engine (Requirement D)
+            </h2>
+            <p class="panel-desc">
+              Interactive test bench demonstrating Unicode homoglyph spoofing, leetspeak character substitutions, added phishing words, and benign normal name false-positive rejection.
+            </p>
+          </div>
+        </div>
+
+        <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
+          Try one of the hackathon judge test presets or enter custom strings:
+        </p>
+
+        <div class="preset-chips">
+          <button class="preset-chip" onclick="applyLabPreset('N1ke Official Deals')">
+            <span>🔢 Leetspeak:</span> <b>N1ke Official Deals</b>
+          </button>
+          <button class="preset-chip" onclick="applyLabPreset('Nik\u0435 Customer Care')">
+            <span>🔤 Homoglyph:</span> <b>Nikе Customer Care (Cyrillic 'е')</b>
+          </button>
+          <button class="preset-chip" onclick="applyLabPreset('Nike Support 24/7')">
+            <span>➕ Added Word:</span> <b>Nike Support 24/7</b>
+          </button>
+          <button class="preset-chip" onclick="applyLabPreset('Nike Official Help')">
+            <span>🚨 Impersonation:</span> <b>Nike Official Help</b>
+          </button>
+          <button class="preset-chip" onclick="applyLabPreset('Nikita Sports Store')" style="border-color:#86efac; background:#f0fdf4;">
+            <span>🛡️ Benign Name:</span> <b>Nikita Sports Store (Zero False Positive)</b>
+          </button>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Legitimate Protected Brand Name</label>
+            <input type="text" id="lab-brand-name" class="form-control" value="Nike">
+          </div>
+          <div class="form-group">
+            <label>Candidate / Impersonating Name</label>
+            <input type="text" id="lab-cand-name" class="form-control" value="N1ke Official Deals">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="testLookalikeLab()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Analyze String Vector
+        </button>
+
+        <div id="lab-result-card" class="lab-output hidden">
+          <div class="lab-stats-grid">
+            <div class="lab-stat">
+              <span>Overall Match Score</span>
+              <b id="lab-score">0%</b>
+            </div>
+            <div class="lab-stat">
+              <span>Look-alike Verdict</span>
+              <b id="lab-verdict">--</b>
+            </div>
+            <div class="lab-stat">
+              <span>Normalized String</span>
+              <div class="code-box" id="lab-norm">--</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 14px;">
+            <h4 style="font-size: 13.5px; font-weight: 700; margin-bottom: 6px;">Classification & Attack Vectors Detected:</h4>
+            <div id="lab-match-types" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;"></div>
+          </div>
+
+          <div style="margin-top: 14px;">
+            <h4 style="font-size: 13.5px; font-weight: 700; margin-bottom: 6px;">Detailed Vector Signals:</h4>
+            <div id="lab-details-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: EXECUTIVE AUDIT & REPORT -->
+    <section id="tab-audit" class="hidden">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Executive Security Posture Audit
+            </h2>
+            <p class="panel-desc">Incident overview ready for SOC analysts and compliance export.</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-primary" onclick="exportCSV()">Download CSV Audit Report</button>
+            <button class="btn btn-secondary" onclick="window.print()">Print / PDF</button>
+          </div>
+        </div>
+
+        <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:20px; margin-bottom:20px;">
+          <h3 style="font-size:15px; font-weight:700; margin-bottom:8px;">Executive Summary</h3>
+          <p style="font-size:13.5px; color:#334155; line-height:1.6;" id="exec-summary-text">
+            BrandShield AI evaluated candidates across external surfaces. Load demo data or execute a scan to generate an up-to-date executive threat report.
+          </p>
+        </div>
+
+        <div id="audit-table-container">
+          <div class="empty-state">
+            <h3>No Audit Events Yet</h3>
+            <p>Execute a threat scan to populate the compliance log.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Detail Evidence Modal -->
+  <div id="detail-modal" class="modal-backdrop hidden" onclick="if(event.target===this)closeModal()">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast-el" class="toast-box hidden"></div>
+
+  <script>
+    let currentBrand = null;
+    let currentCandidates = [];
+    let currentScanResults = [];
+    let currentFilter = 'ALL';
+
+    const $ = id => document.getElementById(id);
+
+    function showToast(msg) {
+      const el = $('toast-el');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 2800);
+    }
+
+    async function api(path, options = {}) {
+      try {
+        const res = await fetch(path, {
+          headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+          ...options
+        });
+        const data = await res.json().catch(() => ({ detail: 'Invalid JSON response from server' }));
+        if (!res.ok) {
+          throw new Error(data.detail || `Server returned error status ${res.status}`);
+        }
+        return data;
+      } catch (err) {
+        throw err;
+      }
+    }
+
+    function switchTab(tabId, btn) {
+      ['tab-threats', 'tab-brand', 'tab-lab', 'tab-audit'].forEach(id => {
+        $(id).classList.toggle('hidden', id !== tabId);
+      });
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      if (tabId === 'tab-audit') renderAuditReport();
+    }
+
+    function setFilter(level, btn) {
+      currentFilter = level;
+      document.querySelectorAll('.pill-filter').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderThreatList();
+    }
+
+    async function init() {
+      try {
+        currentBrand = await api('/api/brand');
+        if (currentBrand) {
+          fillBrandForm();
+          $('lab-brand-name').value = currentBrand.name || 'Nike';
+          await reloadCandidates();
+          if (currentCandidates.length > 0) {
+            await triggerRunScan();
+          }
+        } else {
+          showToast('Welcome to BrandShield AI! Click "⚡ Load Demo Data" to get started.');
+        }
+      } catch (err) {
+        showToast('Error connecting to backend: ' + err.message);
+      }
+    }
+
+    function fillBrandForm() {
+      if (!currentBrand) return;
+      $('brand-name').value = currentBrand.name || '';
+      $('brand-website').value = currentBrand.website || '';
+      $('brand-social').value = currentBrand.official_social || '';
+      $('brand-app').value = currentBrand.official_app || '';
+      $('brand-publisher').value = currentBrand.official_publisher || '';
+      $('brand-logo').value = currentBrand.logo || '';
+    }
+
+    async function saveBrandProfile() {
+      const payload = {
+        name: $('brand-name').value.trim(),
+        website: $('brand-website').value.trim(),
+        official_social: $('brand-social').value.trim(),
+        official_app: $('brand-app').value.trim(),
+        official_publisher: $('brand-publisher').value.trim(),
+        logo: $('brand-logo').value.trim()
+      };
+      if (!payload.name) {
+        showToast('Please enter a Brand Name');
+        return;
+      }
+      try {
+        currentBrand = await api('/api/brand', { method: 'POST', body: JSON.stringify(payload) });
+        $('lab-brand-name').value = currentBrand.name;
+        showToast('✅ Brand profile saved successfully');
+        await reloadCandidates();
+      } catch (err) {
+        showToast('Failed to save brand: ' + err.message);
+      }
+    }
+
+    async function reloadCandidates() {
+      if (!currentBrand) return;
+      try {
+        currentCandidates = await api('/api/candidates?brand_id=' + currentBrand.id);
+        renderCandidatesTable();
+        $('kpi-total').textContent = currentCandidates.length;
+        $('cand-registry-count').textContent = currentCandidates.length;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function triggerSeedDemo() {
+      try {
+        showToast('⚡ Seeding Nike demo assets and candidate vectors...');
+        const res = await api('/api/demo/seed', { method: 'POST' });
+        currentBrand = res.brand;
+        fillBrandForm();
+        $('lab-brand-name').value = currentBrand.name;
+        await reloadCandidates();
+        await triggerRunScan();
+        showToast('✅ Demo loaded & threat scan completed!');
+      } catch (err) {
+        showToast('Failed to seed demo: ' + err.message);
+      }
+    }
+
+    async function triggerResetDemo() {
+      if (!confirm('Are you sure you want to reset the database? All candidates and scans will be cleared.')) return;
+      try {
+        await api('/api/demo/reset', { method: 'POST' });
+        currentCandidates = [];
+        currentScanResults = [];
+        renderThreatList();
+        renderCandidatesTable();
+        updateKpis([]);
+        showToast('Database reset successfully.');
+      } catch (err) {
+        showToast('Reset failed: ' + err.message);
+      }
+    }
+
+    async function triggerRunScan() {
+      if (!currentBrand) {
+        showToast('Please configure a brand profile or click "⚡ Load Demo Data"');
+        return;
+      }
+      if (!currentCandidates.length) {
+        showToast('No candidates available to scan. Ingest or add one.');
+        return;
+      }
+
+      const scanBtn = $('btn-scan');
+      scanBtn.disabled = true;
+      scanBtn.innerHTML = 'Scanning Assets...';
+
+      try {
+        const scanRes = await api('/api/scan', {
+          method: 'POST',
+          body: JSON.stringify({ brand_id: currentBrand.id })
+        });
+        currentScanResults = scanRes.results || [];
+        updateKpis(currentScanResults);
+        renderThreatList();
+        showToast(`Scan complete: ${currentScanResults.length} candidates evaluated.`);
+      } catch (err) {
+        showToast('Scan failed: ' + err.message);
+      } finally {
+        scanBtn.disabled = false;
+        scanBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg> Execute Threat Scan';
+      }
+    }
+
+    function updateKpis(results) {
+      const total = results.length;
+      const critical = results.filter(r => r.risk_level === 'CRITICAL').length;
+      const high = results.filter(r => r.risk_level === 'HIGH').length;
+      const medium = results.filter(r => r.risk_level === 'MEDIUM').length;
+      const safe = results.filter(r => r.risk_level === 'SAFE').length;
+
+      $('kpi-total').textContent = total || currentCandidates.length;
+      $('kpi-threats').textContent = critical + high;
+      $('kpi-suspicious').textContent = medium;
+      $('kpi-safe').textContent = safe;
+
+      $('count-all').textContent = total;
+      $('count-critical').textContent = critical;
+      $('count-high').textContent = high;
+      $('count-medium').textContent = medium;
+      $('count-safe').textContent = safe;
+    }
+
+    function renderThreatList() {
+      const container = $('threat-list-container');
+      const query = ($('search-threats').value || '').toLowerCase().trim();
+
+      let list = currentScanResults;
+      if (currentFilter !== 'ALL') {
+        list = list.filter(r => r.risk_level === currentFilter);
+      }
+      if (query) {
+        list = list.filter(r => 
+          (r.candidate.name || '').toLowerCase().includes(query) ||
+          (r.candidate.identifier || '').toLowerCase().includes(query) ||
+          (r.candidate.publisher || '').toLowerCase().includes(query)
+        );
+      }
+
+      if (!list.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" color="#94a3b8"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            <h3>No threats matching filter</h3>
+            <p>Try switching the severity filter or resetting search terms.</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = list.map((item, idx) => {
+        const c = item.candidate;
+        const level = item.risk_level;
+        const isApp = c.type === 'app';
+        const fillClass = `fill-${level.toLowerCase()}`;
+        const borderClass = `${level.toLowerCase()}-border`;
+
+        return `
+          <div class="threat-card ${borderClass}" onclick="openThreatDetails(${idx})">
+            <div class="threat-info">
+              <div class="type-avatar ${isApp ? 'type-app' : 'type-social'}">
+                ${isApp ? 'APP' : 'SOC'}
+              </div>
+              <div class="threat-meta">
+                <h4>
+                  ${esc(c.name)}
+                  ${item.official_match ? '<span class="badge badge-safe">Verified Official</span>' : ''}
+                </h4>
+                <p>
+                  <b>${esc(c.identifier || 'No handle')}</b> · Publisher: ${esc(c.publisher || 'Unknown')} · Source: ${esc(c.source)}
+                </p>
+              </div>
+            </div>
+
+            <div class="threat-signals">
+              <div class="signal-item">
+                <span>Name Sim</span>
+                <b>${item.name_similarity}%</b>
+              </div>
+              <div class="signal-item">
+                <span>Publisher</span>
+                <b>${item.publisher_match ? 'MATCH' : 'MISMATCH'}</b>
+              </div>
+
+              <div class="score-meter">
+                <div class="score-meter-num" style="color: ${getRiskColor(level)}">
+                  ${item.risk_score}<span style="font-size:12px; color:var(--text-light); font-weight:500;">/100</span>
+                </div>
+                <div class="score-bar-wrap">
+                  <div class="score-bar-fill ${fillClass}" style="width: ${item.risk_score}%"></div>
+                </div>
+              </div>
+
+              <div>
+                <span class="badge badge-${level.toLowerCase()}">${level}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function getRiskColor(level) {
+      switch(level) {
+        case 'CRITICAL': return '#dc2626';
+        case 'HIGH': return '#ea580c';
+        case 'MEDIUM': return '#ca8a04';
+        default: return '#059669';
+      }
+    }
+
+    function openThreatDetails(idx) {
+      const item = currentScanResults[idx];
+      if (!item) return;
+
+      const c = item.candidate;
+      const look = item.lookalike || {};
+      const modal = $('detail-modal');
+
+      $('modal-content').innerHTML = `
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+          <div>
+            <span class="badge badge-${item.risk_level.toLowerCase()}">${item.risk_level} RISK</span>
+            <h2 style="font-size:20px; font-weight:800; margin-top:6px;">${esc(c.name)}</h2>
+            <p style="font-size:13px; color:var(--text-muted);">${esc(c.type.toUpperCase())} · ${esc(c.identifier || '')} · Publisher: ${esc(c.publisher || 'Unknown')}</p>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:32px; font-weight:800; color:${getRiskColor(item.risk_level)}">${item.risk_score}<span style="font-size:15px; color:var(--text-muted);">/100</span></div>
+            <span style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted);">Impersonation Score</span>
+          </div>
+        </div>
+
+        <div class="lab-stats-grid" style="margin-top:16px;">
+          <div class="lab-stat">
+            <span>Name Similarity</span>
+            <b>${item.name_similarity}%</b>
+          </div>
+          <div class="lab-stat">
+            <span>Description Match</span>
+            <b>${item.description_similarity}%</b>
+          </div>
+          <div class="lab-stat">
+            <span>Publisher Match</span>
+            <b>${item.publisher_match ? 'YES' : 'NO (MISMATCH)'}</b>
+          </div>
+        </div>
+
+        ${look.is_lookalike ? `
+          <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:12px 14px; margin: 16px 0;">
+            <div style="font-size:13px; font-weight:700; color:#ea580c; display:flex; align-items:center; gap:6px;">
+              ⚠️ Look-alike Vector Classification
+            </div>
+            <div style="margin-top:6px; font-size:12.5px; color:#431407;">
+              ${(look.match_types || []).join(' • ')}
+            </div>
+          </div>
+        ` : ''}
+
+        <h3 style="font-size:14px; font-weight:700; margin:16px 0 6px;">Why This Was Flagged (Explainable AI Engine):</h3>
+        <ul class="evidence-list">
+          ${item.evidence.map(e => `
+            <li class="evidence-item">
+              <span>•</span>
+              <div>${esc(e)}</div>
+            </li>
+          `).join('')}
+        </ul>
+
+        <div style="background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:14px; margin-top:18px;">
+          <h4 style="font-size:12.5px; font-weight:700; color:var(--text); text-transform:uppercase; letter-spacing:0.04em;">SOC Recommended Remediation:</h4>
+          <p style="font-size:13px; color:#334155; margin-top:4px;">
+            ${item.official_match ? 'No action needed. Asset is verified official brand identity.' : 
+              item.risk_level === 'CRITICAL' ? 'Immediate Action: Generate takedown bundle, notify platform abuse desk for scam domain/account seizure, and issue customer warning.' :
+              item.risk_level === 'HIGH' ? 'High Priority: Submit DMCA trademark violation notice and flag account for impersonation monitoring.' :
+              'Monitor: Keep under periodic scan review for behavior or keyword escalation.'}
+          </p>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      $('detail-modal').classList.add('hidden');
+    }
+
+    // Candidate Management
+    function renderCandidatesTable() {
+      const container = $('candidates-table-container');
+      if (!currentCandidates.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h3>No Candidates Monitored</h3>
+            <p>Add custom candidates or ingest live URLs above.</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+          <thead>
+            <tr style="border-bottom:2px solid var(--border); text-align:left; color:var(--text-muted); font-size:11.5px; text-transform:uppercase;">
+              <th style="padding:10px 8px;">Type</th>
+              <th style="padding:10px 8px;">Candidate Name</th>
+              <th style="padding:10px 8px;">Handle / ID</th>
+              <th style="padding:10px 8px;">Publisher</th>
+              <th style="padding:10px 8px;">Source</th>
+              <th style="padding:10px 8px; text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${currentCandidates.map(c => `
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:10px 8px;">
+                  <span class="badge ${c.type==='app'?'badge-medium':'badge-safe'}" style="font-size:10px;">${c.type.toUpperCase()}</span>
+                </td>
+                <td style="padding:10px 8px; font-weight:600;">${esc(c.name)}</td>
+                <td style="padding:10px 8px; font-family:monospace; color:#475569;">${esc(c.identifier||'-')}</td>
+                <td style="padding:10px 8px;">${esc(c.publisher||'-')}</td>
+                <td style="padding:10px 8px; color:var(--text-muted);">${esc(c.source)}</td>
+                <td style="padding:10px 8px; text-align:right;">
+                  <button class="btn btn-secondary btn-sm" onclick="editCandidatePrompt(${c.id})">Edit</button>
+                  <button class="btn btn-danger-outline btn-sm" onclick="deleteCandidateAction(${c.id})">Delete</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    async function addManualCandidate() {
+      if (!currentBrand) {
+        showToast('Please save a brand profile first');
+        return;
+      }
+      const name = $('cand-name').value.trim();
+      if (!name) {
+        showToast('Please enter Candidate Name');
+        return;
+      }
+
+      const payload = {
+        type: $('cand-type').value,
+        name: name,
+        identifier: $('cand-ident').value.trim(),
+        publisher: $('cand-pub').value.trim(),
+        description: $('cand-desc').value.trim(),
+        logo: '',
+        source_url: '',
+        source: 'manual'
+      };
+
+      try {
+        await api('/api/candidates?brand_id=' + currentBrand.id, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        $('cand-name').value = '';
+        $('cand-ident').value = '';
+        $('cand-pub').value = '';
+        $('cand-desc').value = '';
+        showToast('Candidate added to monitoring registry.');
+        await reloadCandidates();
+      } catch (err) {
+        showToast('Failed to add candidate: ' + err.message);
+      }
+    }
+
+    async function ingestGooglePlay() {
+      if (!currentBrand) {
+        showToast('Save a brand profile first');
+        return;
+      }
+      const url = $('ingest-play-url').value.trim();
+      if (!url) {
+        showToast('Please enter a Google Play URL');
+        return;
+      }
+      try {
+        showToast('Importing Google Play app listing...');
+        await api('/api/ingest/google-play?brand_id=' + currentBrand.id, {
+          method: 'POST',
+          body: JSON.stringify({ url })
+        });
+        $('ingest-play-url').value = '';
+        showToast('✅ Google Play app successfully ingested!');
+        await reloadCandidates();
+      } catch (err) {
+        showToast('Failed to import app: ' + err.message);
+      }
+    }
+
+    async function ingestSocial() {
+      if (!currentBrand) {
+        showToast('Save a brand profile first');
+        return;
+      }
+      const url = $('ingest-social-url').value.trim();
+      if (!url) {
+        showToast('Please enter a public social URL');
+        return;
+      }
+      try {
+        showToast('Importing social profile metadata...');
+        await api('/api/ingest/social?brand_id=' + currentBrand.id, {
+          method: 'POST',
+          body: JSON.stringify({ url })
+        });
+        $('ingest-social-url').value = '';
+        showToast('✅ Social profile successfully ingested!');
+        await reloadCandidates();
+      } catch (err) {
+        showToast('Failed to import profile: ' + err.message);
+      }
+    }
+
+    async function editCandidatePrompt(id) {
+      const c = currentCandidates.find(x => x.id === id);
+      if (!c) return;
+      const newName = prompt('Update candidate name:', c.name);
+      if (newName === null) return;
+      const newPub = prompt('Update publisher:', c.publisher || '');
+      const newDesc = prompt('Update description:', c.description || '');
+
+      try {
+        await api('/api/candidates/' + id, {
+          method: 'PUT',
+          body: JSON.stringify({ ...c, name: newName, publisher: newPub, description: newDesc })
+        });
+        showToast('Candidate updated.');
+        await reloadCandidates();
+      } catch (err) {
+        showToast('Update failed: ' + err.message);
+      }
+    }
+
+    async function deleteCandidateAction(id) {
+      if (!confirm('Remove this candidate from monitoring registry?')) return;
+      try {
+        await api('/api/candidates/' + id, { method: 'DELETE' });
+        showToast('Candidate deleted.');
+        await reloadCandidates();
+      } catch (err) {
+        showToast('Delete failed: ' + err.message);
+      }
+    }
+
+    // Look-alike Lab Interactive Functionality
+    function applyLabPreset(val) {
+      $('lab-cand-name').value = val;
+      testLookalikeLab();
+    }
+
+    async function testLookalikeLab() {
+      const official = $('lab-brand-name').value.trim() || 'Nike';
+      const candidate = $('lab-cand-name').value.trim();
+      if (!candidate) {
+        showToast('Please enter a candidate name to analyze');
+        return;
+      }
+
+      try {
+        const res = await api('/api/analyze/name', {
+          method: 'POST',
+          body: JSON.stringify({ official_name: official, candidate_name: candidate })
+        });
+
+        $('lab-result-card').classList.remove('hidden');
+        $('lab-score').textContent = res.overall_similarity + '%';
+        $('lab-verdict').textContent = res.is_lookalike ? '⚠️ SUSPICIOUS LOOK-ALIKE' : '✅ BENIGN / SAFE';
+        $('lab-verdict').style.color = res.is_lookalike ? '#ea580c' : '#059669';
+        $('lab-norm').textContent = res.normalized_candidate;
+
+        const typesContainer = $('lab-match-types');
+        typesContainer.innerHTML = (res.match_types || []).map(t => `
+          <span class="badge ${res.is_lookalike ? 'badge-high' : 'badge-safe'}">${esc(t)}</span>
+        `).join('');
+
+        const d = res.details || {};
+        let detailsHtml = '';
+        if (d.homoglyphs && d.homoglyphs.length) {
+          detailsHtml += `<p style="font-size:12.5px; margin-bottom:4px;"><b>Unicode Homoglyphs Detected:</b> <span class="code-box">${d.homoglyphs.join(', ')}</span></p>`;
+        }
+        if (d.leet_substitutions && d.leet_substitutions.length) {
+          detailsHtml += `<p style="font-size:12.5px; margin-bottom:4px;"><b>Leetspeak Substitutions:</b> <span class="code-box">${d.leet_substitutions.join(', ')}</span></p>`;
+        }
+        if (d.affixes_detected && d.affixes_detected.length) {
+          detailsHtml += `<p style="font-size:12.5px; margin-bottom:4px;"><b>Suspicious Affix Terms:</b> <span class="code-box">${d.affixes_detected.join(', ')}</span></p>`;
+        }
+        if (!detailsHtml) {
+          detailsHtml = `<p style="font-size:12.5px; color:var(--text-muted);">No acute character manipulation or spoofing patterns detected.</p>`;
+        }
+        $('lab-details-container').innerHTML = detailsHtml;
+
+      } catch (err) {
+        showToast('Analysis error: ' + err.message);
+      }
+    }
+
+    // Executive Audit Report Tab
+    function renderAuditReport() {
+      const container = $('audit-table-container');
+      const summaryText = $('exec-summary-text');
+
+      if (!currentScanResults.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h3>No Audit Events Found</h3>
+            <p>Execute a threat scan on Tab 1 to populate data.</p>
+          </div>`;
+        return;
+      }
+
+      const crit = currentScanResults.filter(r => r.risk_level === 'CRITICAL').length;
+      const high = currentScanResults.filter(r => r.risk_level === 'HIGH').length;
+      const safe = currentScanResults.filter(r => r.risk_level === 'SAFE').length;
+
+      summaryText.innerHTML = `
+        Executive analysis for protected brand <b>${esc(currentBrand ? currentBrand.name : 'Unknown')}</b>:
+        Out of <b>${currentScanResults.length}</b> monitored candidates across social profiles and mobile app repositories,
+        BrandShield AI identified <b>${crit + high} critical/high priority impersonation threats</b> requiring immediate takedown.
+        <b>${safe} assets</b> were cryptographically confirmed as official brand properties and granted false-positive immunity.
+      `;
+
+      container.innerHTML = `
+        <table style="width:100%; border-collapse:collapse; font-size:13px; margin-top:16px;">
+          <thead>
+            <tr style="border-bottom:2px solid var(--border); text-align:left; color:var(--text-muted); font-size:11.5px; text-transform:uppercase;">
+              <th style="padding:10px 8px;">Candidate</th>
+              <th style="padding:10px 8px;">Channel</th>
+              <th style="padding:10px 8px;">Risk Score</th>
+              <th style="padding:10px 8px;">Status</th>
+              <th style="padding:10px 8px;">Key Evidence Finding</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${currentScanResults.map(r => `
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:10px 8px; font-weight:600;">${esc(r.candidate.name)}</td>
+                <td style="padding:10px 8px; text-transform:uppercase; font-size:11px;">${esc(r.candidate.type)}</td>
+                <td style="padding:10px 8px; font-weight:700; color:${getRiskColor(r.risk_level)}">${r.risk_score}/100</td>
+                <td style="padding:10px 8px;"><span class="badge badge-${r.risk_level.toLowerCase()}">${r.risk_level}</span></td>
+                <td style="padding:10px 8px; color:#475569; font-size:12px;">${esc(r.evidence[0] || 'Clean')}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function exportCSV() {
+      window.location.href = '/api/export.csv';
+    }
+
+    function esc(s) {
+      return String(s ?? '').replace(/[&<>'"]/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[m]));
+    }
+
+    // Initialize application on page load
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
