@@ -20,6 +20,6 @@ env/
 *.swp
 *.swo
 
-# OS files
+# OS file
 .DS_Store
 Thumbs.db
