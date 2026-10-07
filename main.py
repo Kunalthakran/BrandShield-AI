@@ -389,7 +389,7 @@ def analyze(c: Candidate, b: Brand):
         'evidence': evidence
     }
 
-# HTTP Routes
+# HTTP Route
 @app.get('/')
 def home():
     index_path = os.path.join(STATIC_DIR, 'index.html')
