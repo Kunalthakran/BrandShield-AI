@@ -14,8 +14,9 @@ from rapidfuzz import fuzz
 from sqlalchemy import create_engine, String, Text, Integer, Float, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker, Session
 
-# Database setup with PostgreSQL and SQLite compatibility
-DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///./brandshield.db')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_DB_FILE = os.path.join(BASE_DIR, 'brandshield.db').replace('\\', '/')
+DATABASE_URL = os.getenv('DATABASE_URL', f'sqlite:///{DEFAULT_DB_FILE}')
 if DATABASE_URL.startswith('postgres://'):
     DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql+psycopg://', 1)
 elif DATABASE_URL.startswith('postgresql://') and not DATABASE_URL.startswith('postgresql+psycopg://'):
@@ -407,6 +408,7 @@ def get_brand(s: Session = Depends(db)):
     return brand_dict(b)
 
 @app.post('/api/brand')
+@app.put('/api/brand')
 def save_brand(x: BrandIn, s: Session = Depends(db)):
     b = s.query(Brand).first()
     if not b:

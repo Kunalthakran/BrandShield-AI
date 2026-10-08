@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>BrandShield AI - Digital Risk Protection Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <style>
+    /* ============================================================
+       THEME VARIABLES - LIGHT (DEFAULT) & DARK MODE
+       ============================================================ */
     :root {
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -43,6 +46,44 @@
       --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
       --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
       --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+      --surface-subtle: #f8fafc;
+      --table-stripe: #f8fafc;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b1120;
+      --card-bg: #0f172a;
+      --border: #1e293b;
+      --border-focus: #60a5fa;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-light: #64748b;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-light: #1e293b;
+      --primary-border: #3b82f6;
+      
+      --critical-bg: #450a0a;
+      --critical-text: #f87171;
+      --critical-border: #7f1d1d;
+      
+      --high-bg: #431407;
+      --high-text: #fb923c;
+      --high-border: #7c2d12;
+      
+      --medium-bg: #422006;
+      --medium-text: #facc15;
+      --medium-border: #713f12;
+      
+      --safe-bg: #022c22;
+      --safe-text: #34d399;
+      --safe-border: #065f46;
+      
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+      --surface-subtle: #111827;
+      --table-stripe: #131d33;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,6 +93,7 @@
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     button, input, textarea, select {
@@ -59,11 +101,11 @@
       font-size: 14px;
     }
 
-    /* Layout */
+    /* Layout & Containers */
     .app-container {
       max-width: 1380px;
       margin: 0 auto;
-      padding: 24px 32px 64px;
+      padding: 20px 24px 60px;
     }
 
     /* Top Navigation Header */
@@ -71,23 +113,25 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 16px 24px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       box-shadow: var(--shadow-sm);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .brand-cluster {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
 
     .logo-shield {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
       border-radius: var(--radius-md);
       display: flex;
@@ -95,32 +139,34 @@
       justify-content: center;
       color: white;
       box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      flex-shrink: 0;
     }
 
     .brand-title h1 {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 800;
       color: var(--text);
       letter-spacing: -0.02em;
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .hack-badge {
       font-size: 11px;
       font-weight: 700;
       padding: 2px 8px;
-      background: #eff6ff;
-      color: #2563eb;
-      border: 1px solid #bfdbfe;
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid var(--primary-border);
       border-radius: 999px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
 
     .brand-title p {
-      font-size: 12.5px;
+      font-size: 12px;
       color: var(--text-muted);
       font-weight: 500;
     }
@@ -128,22 +174,30 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
+    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 9px 15px;
+      gap: 6px;
+      padding: 8px 14px;
       border-radius: var(--radius-md);
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease-in-out;
       border: 1px solid transparent;
       outline: none;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
     }
 
     .btn-primary {
@@ -153,7 +207,7 @@
     }
     .btn-primary:hover {
       background: var(--primary-hover);
-      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
     }
 
     .btn-demo {
@@ -165,55 +219,122 @@
       background: #dcfce7;
       border-color: #86efac;
     }
+    [data-theme="dark"] .btn-demo {
+      background: #064e3b;
+      color: #a7f3d0;
+      border-color: #059669;
+    }
 
     .btn-secondary {
-      background: #ffffff;
+      background: var(--card-bg);
       color: var(--text);
       border-color: var(--border);
     }
     .btn-secondary:hover {
-      background: #f8fafc;
-      border-color: #cbd5e1;
+      background: var(--surface-subtle);
+      border-color: var(--text-light);
     }
 
     .btn-danger-outline {
-      background: #ffffff;
+      background: var(--card-bg);
       color: #dc2626;
-      border-color: #fecaca;
+      border-color: var(--critical-border);
     }
     .btn-danger-outline:hover {
-      background: #fef2f2;
+      background: var(--critical-bg);
+    }
+    [data-theme="dark"] .btn-danger-outline {
+      color: #f87171;
+      border-color: #7f1d1d;
     }
 
     .btn-sm {
-      padding: 6px 11px;
-      font-size: 12.5px;
+      padding: 6px 10px;
+      font-size: 12px;
       border-radius: var(--radius-sm);
     }
 
-    /* Tabs Bar */
+    /* Active Brand Bar Across All Tabs */
+    .active-brand-strip {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 10px 16px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .active-brand-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-pulse-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+      animation: pulse-dot 2s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+      50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    }
+
+    .active-brand-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .active-brand-details {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Tabs Bar - Mobile-optimized horizontal scroll */
+    .tab-bar-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+    .tab-bar-container::-webkit-scrollbar { display: none; }
+
     .tab-bar {
       display: flex;
-      gap: 8px;
-      border-bottom: 2px solid var(--border);
-      margin-bottom: 24px;
+      gap: 6px;
+      min-width: max-content;
       padding-bottom: 4px;
     }
 
     .tab-btn {
       background: transparent;
       border: none;
-      padding: 10px 18px;
-      font-size: 14px;
+      padding: 9px 15px;
+      font-size: 13.5px;
       font-weight: 600;
       color: var(--text-muted);
       border-radius: var(--radius-md) var(--radius-md) 0 0;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       position: relative;
       transition: color 0.15s ease;
+      white-space: nowrap;
     }
 
     .tab-btn:hover {
@@ -240,15 +361,15 @@
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: 14px;
+      margin-bottom: 22px;
     }
 
     .kpi-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 20px;
+      padding: 16px 18px;
       box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
@@ -276,21 +397,21 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .kpi-label {
-      font-size: 12.5px;
-      font-weight: 600;
+      font-size: 11.5px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
     }
 
     .kpi-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -301,17 +422,22 @@
     .kpi-icon.orange { background: #fff7ed; color: #ea580c; }
     .kpi-icon.green { background: #ecfdf5; color: #059669; }
 
+    [data-theme="dark"] .kpi-icon.blue { background: #1e3a8a; color: #93c5fd; }
+    [data-theme="dark"] .kpi-icon.red { background: #7f1d1d; color: #fca5a5; }
+    [data-theme="dark"] .kpi-icon.orange { background: #7c2d12; color: #fdba74; }
+    [data-theme="dark"] .kpi-icon.green { background: #064e3b; color: #6ee7b7; }
+
     .kpi-value {
-      font-size: 30px;
+      font-size: 26px;
       font-weight: 800;
       color: var(--text);
       letter-spacing: -0.03em;
     }
 
     .kpi-sub {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-muted);
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
     /* Content Panels */
@@ -319,164 +445,182 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 24px;
+      padding: 20px;
       box-shadow: var(--shadow-sm);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .panel-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
-      padding-bottom: 14px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
       border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .panel-title {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .panel-desc {
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--text-muted);
       margin-top: 2px;
     }
 
-    /* Controls Bar */
+    /* Tab 2 Brand Grid - Responsive 2-Col to 1-Col */
+    .brand-split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    /* Controls & Filters */
     .filter-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 18px;
+      gap: 12px;
+      margin-bottom: 16px;
       flex-wrap: wrap;
     }
 
     .filter-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      flex-wrap: wrap;
     }
 
     .pill-filter {
-      padding: 5px 12px;
+      padding: 5px 11px;
       border-radius: 999px;
       font-size: 12px;
       font-weight: 600;
-      background: #f1f5f9;
+      background: var(--surface-subtle);
       color: var(--text-muted);
-      border: 1px solid transparent;
+      border: 1px solid var(--border);
       cursor: pointer;
       transition: all 0.15s ease;
+      white-space: nowrap;
     }
 
     .pill-filter:hover {
-      background: #e2e8f0;
+      background: var(--border);
       color: var(--text);
     }
 
     .pill-filter.active {
-      background: #eff6ff;
+      background: var(--primary-light);
       color: var(--primary);
-      border-color: #bfdbfe;
+      border-color: var(--primary-border);
     }
 
     .search-input {
-      padding: 8px 14px;
+      padding: 8px 12px;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       font-size: 13px;
-      width: 260px;
+      width: 240px;
       outline: none;
+      background: var(--card-bg);
+      color: var(--text);
       transition: border-color 0.15s ease;
     }
 
     .search-input:focus {
       border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 
-    /* Threat Cards & Table */
+    /* Threat Cards & Items */
     .threat-card {
-      background: #ffffff;
+      background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 16px 20px;
-      margin-bottom: 12px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      transition: all 0.18s ease;
+      gap: 14px;
+      transition: all 0.15s ease;
       cursor: pointer;
     }
 
     .threat-card:hover {
-      border-color: #94a3b8;
+      border-color: var(--text-light);
       box-shadow: var(--shadow-md);
       transform: translateY(-1px);
     }
 
-    .threat-card.safe-border {
-      border-left: 4px solid #10b981;
-    }
-    .threat-card.medium-border {
-      border-left: 4px solid #eab308;
-    }
-    .threat-card.high-border {
-      border-left: 4px solid #f97316;
-    }
-    .threat-card.critical-border {
-      border-left: 4px solid #ef4444;
-    }
+    .threat-card.safe-border { border-left: 4px solid #10b981; }
+    .threat-card.medium-border { border-left: 4px solid #eab308; }
+    .threat-card.high-border { border-left: 4px solid #f97316; }
+    .threat-card.critical-border { border-left: 4px solid #ef4444; }
 
     .threat-info {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       flex: 1;
+      min-width: 0;
     }
 
     .type-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 12px;
       flex-shrink: 0;
     }
 
     .type-social { background: #e0e7ff; color: #4338ca; }
     .type-app { background: #fef3c7; color: #92400e; }
+    [data-theme="dark"] .type-social { background: #312e81; color: #c7d2fe; }
+    [data-theme="dark"] .type-app { background: #78350f; color: #fde68a; }
+
+    .threat-meta {
+      min-width: 0;
+    }
 
     .threat-meta h4 {
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 700;
       color: var(--text);
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
+      word-break: break-word;
     }
 
     .threat-meta p {
-      font-size: 12.5px;
+      font-size: 12px;
       color: var(--text-muted);
-      margin-top: 3px;
+      margin-top: 2px;
+      word-break: break-word;
     }
 
     .threat-signals {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 16px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
     }
 
     .signal-item {
@@ -485,14 +629,14 @@
 
     .signal-item span {
       display: block;
-      font-size: 11px;
+      font-size: 10.5px;
       color: var(--text-light);
       text-transform: uppercase;
       font-weight: 600;
     }
 
     .signal-item b {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
       color: var(--text);
     }
@@ -501,60 +645,45 @@
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 4px 10px;
+      gap: 4px;
+      padding: 3px 8px;
       border-radius: 999px;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.03em;
+      white-space: nowrap;
     }
 
-    .badge-critical {
-      background: var(--critical-bg);
-      color: var(--critical-text);
-      border: 1px solid var(--critical-border);
-    }
-    .badge-high {
-      background: var(--high-bg);
-      color: var(--high-text);
-      border: 1px solid var(--high-border);
-    }
-    .badge-medium {
-      background: var(--medium-bg);
-      color: var(--medium-text);
-      border: 1px solid var(--medium-border);
-    }
-    .badge-safe {
-      background: var(--safe-bg);
-      color: var(--safe-text);
-      border: 1px solid var(--safe-border);
-    }
+    .badge-critical { background: var(--critical-bg); color: var(--critical-text); border: 1px solid var(--critical-border); }
+    .badge-high { background: var(--high-bg); color: var(--high-text); border: 1px solid var(--high-border); }
+    .badge-medium { background: var(--medium-bg); color: var(--medium-text); border: 1px solid var(--medium-border); }
+    .badge-safe { background: var(--safe-bg); color: var(--safe-text); border: 1px solid var(--safe-border); }
 
     .score-meter {
-      width: 76px;
+      width: 70px;
       text-align: center;
     }
 
     .score-meter-num {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
       letter-spacing: -0.03em;
     }
 
     .score-bar-wrap {
       width: 100%;
-      height: 6px;
-      background: #e2e8f0;
+      height: 5px;
+      background: var(--border);
       border-radius: 999px;
       overflow: hidden;
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
     .score-bar-fill {
       height: 100%;
       border-radius: 999px;
-      transition: width 0.4s ease;
+      transition: width 0.3s ease;
     }
 
     .fill-critical { background: #ef4444; }
@@ -566,11 +695,11 @@
     .form-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      gap: 14px;
     }
 
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .form-group.full-width {
@@ -579,100 +708,91 @@
 
     .form-group label {
       display: block;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
-      color: #334155;
-      margin-bottom: 6px;
+      color: var(--text);
+      margin-bottom: 5px;
     }
 
     .form-control {
       width: 100%;
-      padding: 10px 14px;
+      padding: 9px 12px;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       font-size: 13.5px;
       color: var(--text);
-      background: #ffffff;
+      background: var(--card-bg);
       outline: none;
       transition: border-color 0.15s ease;
     }
 
     .form-control:focus {
       border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 
     textarea.form-control {
-      min-height: 80px;
+      min-height: 75px;
       resize: vertical;
     }
 
     .helper-text {
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--text-muted);
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
     /* Look-alike Lab Interactive Styles */
-    .lab-box {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 22px;
-      margin-top: 16px;
-    }
-
     .preset-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 18px;
+      gap: 6px;
+      margin-bottom: 16px;
     }
 
     .preset-chip {
-      background: #ffffff;
-      border: 1px solid #cbd5e1;
-      padding: 6px 13px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      padding: 5px 11px;
       border-radius: 999px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
-      color: #334155;
+      color: var(--text);
       cursor: pointer;
       transition: all 0.15s ease;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .preset-chip:hover {
-      background: #f1f5f9;
-      border-color: #94a3b8;
+      background: var(--border);
     }
 
     .lab-output {
-      background: #ffffff;
+      background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 20px;
-      margin-top: 18px;
+      padding: 16px;
+      margin-top: 16px;
     }
 
     .lab-stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 16px;
+      gap: 12px;
+      margin-bottom: 14px;
     }
 
     .lab-stat {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 12px;
+      padding: 10px;
     }
 
     .lab-stat span {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -680,51 +800,90 @@
     }
 
     .lab-stat b {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 800;
       color: var(--text);
     }
 
     .code-box {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12.5px;
-      background: #f1f5f9;
-      padding: 8px 12px;
+      font-size: 12px;
+      background: var(--surface-subtle);
+      padding: 6px 10px;
       border-radius: 6px;
-      color: #0f172a;
+      color: var(--text);
+      border: 1px solid var(--border);
       display: inline-block;
+      word-break: break-all;
     }
 
-    /* Modal */
+    /* Responsive Tables */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 600px;
+    }
+
+    .data-table th {
+      padding: 9px 12px;
+      background: var(--surface-subtle);
+      border-bottom: 2px solid var(--border);
+      text-align: left;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .data-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .data-table tr:hover td {
+      background: var(--table-stripe);
+    }
+
+    /* Modal Backdrop & Card */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15, 23, 42, 0.65);
       backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 16px;
       z-index: 1000;
     }
 
     .modal-card {
-      background: #ffffff;
+      background: var(--card-bg);
       border-radius: var(--radius-lg);
-      max-width: 680px;
+      max-width: 650px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: var(--shadow-lg);
       border: 1px solid var(--border);
-      padding: 28px;
+      padding: 24px;
       position: relative;
     }
 
     .modal-close-btn {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 16px;
+      right: 16px;
       background: transparent;
       border: none;
       font-size: 20px;
@@ -739,89 +898,164 @@
     }
 
     .modal-close-btn:hover {
-      background: #f1f5f9;
+      background: var(--surface-subtle);
       color: var(--text);
     }
 
     .evidence-list {
       list-style: none;
-      margin-top: 12px;
+      margin-top: 10px;
     }
 
     .evidence-item {
       padding: 8px 12px;
       border-radius: 6px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      font-size: 13px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      font-size: 12.5px;
       margin-bottom: 6px;
       display: flex;
       align-items: flex-start;
       gap: 8px;
     }
 
-    /* Toast */
+    /* Toast Notification */
     .toast-box {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 20px;
+      right: 20px;
       background: #0f172a;
       color: #ffffff;
-      padding: 12px 20px;
+      padding: 10px 18px;
       border-radius: var(--radius-md);
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 500;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
       z-index: 2000;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       transition: all 0.2s ease;
+      max-width: 90vw;
+    }
+    [data-theme="dark"] .toast-box {
+      background: #1e293b;
+      border: 1px solid #334155;
     }
 
-    /* Empty states */
+    /* Empty States */
     .empty-state {
       text-align: center;
-      padding: 48px 24px;
+      padding: 36px 20px;
       color: var(--text-muted);
       border: 2px dashed var(--border);
       border-radius: var(--radius-lg);
-      background: #fafafa;
+      background: var(--surface-subtle);
     }
 
     .empty-state h3 {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--text);
-      margin-top: 12px;
+      margin-top: 10px;
     }
 
     .empty-state p {
-      font-size: 13px;
+      font-size: 12.5px;
       max-width: 420px;
-      margin: 6px auto 18px;
+      margin: 5px auto 16px;
     }
 
     .hidden { display: none !important; }
 
+    /* ============================================================
+       RESPONSIVE BREAKPOINTS (TABLET & MOBILE)
+       ============================================================ */
     @media (max-width: 900px) {
-      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-      .form-grid { grid-template-columns: 1fr; }
-      .navbar { flex-direction: column; align-items: flex-start; gap: 14px; }
-      .nav-actions { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
-      .threat-card { flex-direction: column; align-items: flex-start; }
-      .threat-signals { width: 100%; justify-content: space-between; margin-top: 10px; }
+      .brand-split-grid {
+        grid-template-columns: 1fr;
+      }
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .app-container {
+        padding: 12px 14px 48px;
+      }
+      .navbar {
+        padding: 12px 14px;
+      }
+      .brand-cluster {
+        width: 100%;
+      }
+      .nav-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .nav-actions .btn {
+        flex: 1 1 auto;
+        padding: 7px 8px;
+        font-size: 11.5px;
+      }
+      .nav-text-desktop {
+        display: none;
+      }
+      .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .kpi-card {
+        padding: 12px 14px;
+      }
+      .kpi-value {
+        font-size: 22px;
+      }
+      .kpi-sub {
+        display: none;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-input {
+        width: 100%;
+      }
+      .threat-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .threat-info {
+        width: 100%;
+      }
+      .threat-signals {
+        width: 100%;
+        justify-content: space-between;
+        padding-top: 10px;
+        border-top: 1px dashed var(--border);
+        margin-top: 6px;
+      }
+      .lab-stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .modal-card {
+        padding: 18px 16px;
+      }
     }
   </style>
 </head>
 <body>
 
   <div class="app-container">
-    <!-- Navbar -->
+    <!-- Navbar Header -->
     <header class="navbar">
       <div class="brand-cluster">
         <div class="logo-shield">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             <path d="M9 12l2 2 4-4"/>
           </svg>
@@ -833,79 +1067,109 @@
       </div>
 
       <div class="nav-actions">
-        <button class="btn btn-demo" onclick="triggerSeedDemo()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          ⚡ Load Demo Data (Nike)
+        <!-- Dark Mode Toggle Button -->
+        <button class="btn btn-secondary btn-sm" id="theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+          <span id="theme-icon">🌙</span> <span id="theme-label" class="nav-text-desktop">Dark Mode</span>
         </button>
-        <button class="btn btn-secondary" onclick="exportCSV()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Export CSV
+
+        <!-- 1-Click Demo Seed Button -->
+        <button class="btn btn-demo btn-sm" onclick="triggerSeedDemo()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          ⚡ <span class="nav-text-desktop">Load Demo Data (Nike)</span><span class="nav-text-mobile">Demo</span>
         </button>
+
+        <!-- CSV Export Button -->
+        <button class="btn btn-secondary btn-sm" onclick="exportCSV()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="nav-text-desktop">Export CSV</span><span class="nav-text-mobile">CSV</span>
+        </button>
+
+        <!-- Reset Button -->
         <button class="btn btn-danger-outline btn-sm" onclick="triggerResetDemo()" title="Reset database">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-          Reset
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/></svg>
+          <span class="nav-text-desktop">Reset</span>
         </button>
       </div>
     </header>
 
-    <!-- Navigation Tabs -->
-    <nav class="tab-bar">
-      <button class="tab-btn active" onclick="switchTab('tab-threats', this)">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Threat Monitor & Scan
-      </button>
-      <button class="tab-btn" onclick="switchTab('tab-brand', this)">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Brand Profile & Ingestion
-      </button>
-      <button class="tab-btn" onclick="switchTab('tab-lab', this)">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31L4.69 15.6A2 2 0 0 0 6.13 19h11.74a2 2 0 0 0 1.44-3.4L14 9.31V2"/></svg>
-        Look-alike Lab (Req D)
-      </button>
-      <button class="tab-btn" onclick="switchTab('tab-audit', this)">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        Executive Audit & Report
-      </button>
-    </nav>
+    <!-- Active Protected Brand Strip (Persistent Visual Confirmation) -->
+    <div class="active-brand-strip" id="active-brand-strip">
+      <div class="active-brand-left">
+        <div class="status-pulse-dot"></div>
+        <div>
+          <span class="active-brand-title">Protecting: <b id="bar-brand-name">Nike</b></span>
+          <span class="active-brand-details" id="bar-brand-meta"> • Official: @nike, @nikeindia • App: Nike (Nike, Inc.)</span>
+        </div>
+      </div>
+      <div>
+        <button class="btn btn-secondary btn-sm" onclick="switchTab('tab-brand', document.querySelectorAll('.tab-btn')[1])">
+          ✏️ Edit Brand Profile
+        </button>
+      </div>
+    </div>
 
-    <!-- TAB 1: THREAT MONITOR & SCAN -->
+    <!-- Navigation Tabs (Horizontally scrollable on mobile) -->
+    <div class="tab-bar-container">
+      <nav class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('tab-threats', this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Threat Monitor & Scan
+        </button>
+        <button class="tab-btn" onclick="switchTab('tab-brand', this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Brand Profile & Ingestion
+        </button>
+        <button class="tab-btn" onclick="switchTab('tab-lab', this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31L4.69 15.6A2 2 0 0 0 6.13 19h11.74a2 2 0 0 0 1.44-3.4L14 9.31V2"/></svg>
+          Look-alike Lab (Req D)
+        </button>
+        <button class="tab-btn" onclick="switchTab('tab-audit', this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Executive Audit & Report
+        </button>
+      </nav>
+    </div>
+
+    <!-- ============================================================
+         TAB 1: THREAT MONITOR & SCAN
+         ============================================================ -->
     <section id="tab-threats">
-      <!-- KPI Cards -->
+      <!-- KPI Cards Grid -->
       <div class="kpi-grid">
         <div class="kpi-card blue">
           <div class="kpi-header">
-            <span class="kpi-label">Assets Monitored</span>
-            <div class="kpi-icon blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
+            <span class="kpi-label">Monitored Assets</span>
+            <div class="kpi-icon blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
           </div>
           <div class="kpi-value" id="kpi-total">0</div>
-          <div class="kpi-sub">Total candidates under surveillance</div>
+          <div class="kpi-sub">Total candidate surveillance vectors</div>
         </div>
 
         <div class="kpi-card red">
           <div class="kpi-header">
-            <span class="kpi-label">Critical / High Threats</span>
-            <div class="kpi-icon red"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <span class="kpi-label">Critical / High</span>
+            <div class="kpi-icon red"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
           </div>
           <div class="kpi-value" id="kpi-threats">0</div>
-          <div class="kpi-sub">Requires active SOC takedown</div>
+          <div class="kpi-sub">Active impersonation attacks</div>
         </div>
 
         <div class="kpi-card orange">
           <div class="kpi-header">
-            <span class="kpi-label">Suspicious Impersonators</span>
-            <div class="kpi-icon orange"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+            <span class="kpi-label">Suspicious</span>
+            <div class="kpi-icon orange"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
           </div>
           <div class="kpi-value" id="kpi-suspicious">0</div>
-          <div class="kpi-sub">Medium risk / look-alike profiles</div>
+          <div class="kpi-sub">Look-alike & affiliate handles</div>
         </div>
 
         <div class="kpi-card green">
           <div class="kpi-header">
-            <span class="kpi-label">Official Protected Assets</span>
-            <div class="kpi-icon green"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="kpi-label">Protected Assets</span>
+            <div class="kpi-icon green"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           </div>
           <div class="kpi-value" id="kpi-safe">0</div>
-          <div class="kpi-sub">Immune from false positives (0 Score)</div>
+          <div class="kpi-sub">Official whitelist (Score 0)</div>
         </div>
       </div>
 
@@ -914,102 +1178,120 @@
         <div class="panel-header">
           <div>
             <h2 class="panel-title">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
               Continuous Impersonation Radar
             </h2>
-            <p class="panel-desc">Real-time multi-signal detection across social platforms and mobile application repositories.</p>
+            <p class="panel-desc">Multi-signal analysis for <b id="radar-brand-name">Nike</b> across social platforms and app stores.</p>
           </div>
           <button class="btn btn-primary" id="btn-scan" onclick="triggerRunScan()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
             Execute Threat Scan
           </button>
         </div>
 
-        <!-- Filter Bar -->
+        <!-- Filter & Search Bar -->
         <div class="filter-bar">
           <div class="filter-group">
-            <span style="font-size:12.5px; font-weight:600; color:var(--text-muted); margin-right:4px;">Filter Severity:</span>
-            <button class="pill-filter active" onclick="setFilter('ALL', this)">All Candidates (<span id="count-all">0</span>)</button>
+            <span style="font-size:12px; font-weight:700; color:var(--text-muted); margin-right:2px;">Filter:</span>
+            <button class="pill-filter active" onclick="setFilter('ALL', this)">All (<span id="count-all">0</span>)</button>
             <button class="pill-filter" onclick="setFilter('CRITICAL', this)">Critical (<span id="count-critical">0</span>)</button>
             <button class="pill-filter" onclick="setFilter('HIGH', this)">High (<span id="count-high">0</span>)</button>
             <button class="pill-filter" onclick="setFilter('MEDIUM', this)">Medium (<span id="count-medium">0</span>)</button>
             <button class="pill-filter" onclick="setFilter('SAFE', this)">Safe (<span id="count-safe">0</span>)</button>
           </div>
 
-          <input type="text" id="search-threats" class="search-input" placeholder="Search by name, handle, publisher..." oninput="renderThreatList()">
+          <input type="text" id="search-threats" class="search-input" placeholder="Search candidate, handle, publisher..." oninput="renderThreatList()">
         </div>
 
         <!-- Threat List Stream -->
         <div id="threat-list-container">
           <div class="empty-state">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" color="#94a3b8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" color="#94a3b8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
             <h3>Ready for Threat Assessment</h3>
-            <p>Click "⚡ Load Demo Data (Nike)" above or click "Execute Threat Scan" to evaluate all candidate vectors.</p>
+            <p>Click "Execute Threat Scan" or "⚡ Load Demo Data" above to start risk scoring.</p>
             <button class="btn btn-primary btn-sm" onclick="triggerSeedDemo()">Load Demo Data & Scan</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TAB 2: BRAND PROFILE & INGESTION -->
+    <!-- ============================================================
+         TAB 2: BRAND PROFILE & INGESTION
+         ============================================================ -->
     <section id="tab-brand" class="hidden">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-        <!-- Brand Profile Configuration -->
+      <!-- 2-Column Responsive Layout -->
+      <div class="brand-split-grid">
+        <!-- Protected Brand Configuration -->
         <div class="panel">
           <div class="panel-header">
             <div>
               <h2 class="panel-title">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 Protected Brand Identity
               </h2>
-              <p class="panel-desc">Define legitimate assets. Verified official assets receive strict whitelist immunity.</p>
+              <p class="panel-desc">Define legitimate assets. Verified official assets receive strict whitelist immunity (Score 0).</p>
+            </div>
+            <div id="save-status-pill" class="badge badge-safe">
+              ● Saved & Synced
+            </div>
+          </div>
+
+          <!-- Quick Brand Presets for Judges -->
+          <div style="margin-bottom: 14px;">
+            <label style="display:block; font-size:11.5px; font-weight:700; color:var(--text-muted); margin-bottom:6px;">Quick Presets:</label>
+            <div class="preset-chips">
+              <button class="preset-chip" onclick="loadBrandPreset('Nike')">👟 Nike</button>
+              <button class="preset-chip" onclick="loadBrandPreset('Adidas')">⚽ Adidas</button>
+              <button class="preset-chip" onclick="loadBrandPreset('Apple')">🍏 Apple</button>
+              <button class="preset-chip" onclick="loadBrandPreset('Netflix')">🎬 Netflix</button>
             </div>
           </div>
 
           <div class="form-group">
             <label>Brand Name *</label>
-            <input type="text" id="brand-name" class="form-control" placeholder="e.g. Nike">
+            <input type="text" id="brand-name" class="form-control" placeholder="e.g. Nike" oninput="markBrandUnsaved()">
           </div>
 
           <div class="form-group">
             <label>Official Website</label>
-            <input type="url" id="brand-website" class="form-control" placeholder="https://www.nike.com">
+            <input type="url" id="brand-website" class="form-control" placeholder="https://www.nike.com" oninput="markBrandUnsaved()">
           </div>
 
           <div class="form-group">
             <label>Official Social Handles (comma separated)</label>
-            <input type="text" id="brand-social" class="form-control" placeholder="@nike, @nikeindia, @nikerunning">
-            <p class="helper-text">Candidates matching these handles are cryptographically whitelisted with 0 risk score.</p>
+            <input type="text" id="brand-social" class="form-control" placeholder="@nike, @nikeindia, @nikerunning" oninput="markBrandUnsaved()">
+            <p class="helper-text">Social profiles matching these handles are granted 0 risk score (IMMUNITY).</p>
           </div>
 
           <div class="form-grid">
             <div class="form-group">
               <label>Official Mobile App Name</label>
-              <input type="text" id="brand-app" class="form-control" placeholder="Nike">
+              <input type="text" id="brand-app" class="form-control" placeholder="Nike" oninput="markBrandUnsaved()">
             </div>
             <div class="form-group">
               <label>Official Developer / Publisher</label>
-              <input type="text" id="brand-publisher" class="form-control" placeholder="Nike, Inc.">
+              <input type="text" id="brand-publisher" class="form-control" placeholder="Nike, Inc." oninput="markBrandUnsaved()">
             </div>
           </div>
 
           <div class="form-group">
             <label>Official Brand Logo URL (optional)</label>
-            <input type="url" id="brand-logo" class="form-control" placeholder="https://...">
+            <input type="url" id="brand-logo" class="form-control" placeholder="https://..." oninput="markBrandUnsaved()">
           </div>
 
-          <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" onclick="saveBrandProfile()">
-            Save Brand Profile
+          <button class="btn btn-primary" id="btn-save-brand" style="width: 100%; margin-top: 6px;" onclick="saveBrandProfile()">
+            💾 Save & Apply Brand Profile
           </button>
         </div>
 
-        <!-- Live Ingestion Adapters -->
+        <!-- Ingestion Adapters & Custom Candidate Form -->
         <div>
+          <!-- Real Ingestion Panel -->
           <div class="panel">
             <div class="panel-header">
               <div>
                 <h2 class="panel-title">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg>
                   Real Source Ingestion
                 </h2>
                 <p class="panel-desc">Ingest live metadata from public stores and social networks without paid API keys.</p>
@@ -1020,15 +1302,15 @@
               <label>Google Play Store Listing URL</label>
               <div style="display:flex; gap:8px;">
                 <input type="url" id="ingest-play-url" class="form-control" placeholder="https://play.google.com/store/apps/details?id=com.example.app">
-                <button class="btn btn-secondary" onclick="ingestGooglePlay()" style="flex-shrink:0;">Import App</button>
+                <button class="btn btn-secondary" onclick="ingestGooglePlay()" style="flex-shrink:0;">Import</button>
               </div>
             </div>
 
-            <div class="form-group" style="margin-top: 16px;">
+            <div class="form-group" style="margin-top: 12px;">
               <label>Public Social Profile URL (Instagram, X, etc.)</label>
               <div style="display:flex; gap:8px;">
                 <input type="url" id="ingest-social-url" class="form-control" placeholder="https://www.instagram.com/fake_support/">
-                <button class="btn btn-secondary" onclick="ingestSocial()" style="flex-shrink:0;">Import Profile</button>
+                <button class="btn btn-secondary" onclick="ingestSocial()" style="flex-shrink:0;">Import</button>
               </div>
             </div>
           </div>
@@ -1038,10 +1320,10 @@
             <div class="panel-header">
               <div>
                 <h2 class="panel-title">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                  Add Custom Candidate
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Register Candidate Manually
                 </h2>
-                <p class="panel-desc">Register custom suspicious handles or mobile app packages.</p>
+                <p class="panel-desc">Add a custom suspect profile or mobile app package.</p>
               </div>
             </div>
 
@@ -1066,7 +1348,7 @@
                 <input type="text" id="cand-pub" class="form-control" placeholder="e.g. Unknown Developer">
               </div>
               <div class="form-group full-width">
-                <label>Bio / App Description</label>
+                <label>Bio / Description</label>
                 <textarea id="cand-desc" class="form-control" placeholder="Describe profile or store listing bio..."></textarea>
               </div>
             </div>
@@ -1076,28 +1358,30 @@
         </div>
       </div>
 
-      <!-- Registered Candidates List Table -->
+      <!-- Monitored Candidates Table -->
       <div class="panel">
         <div class="panel-header">
           <div>
             <h2 class="panel-title">
               Monitored Candidates Registry (<span id="cand-registry-count">0</span>)
             </h2>
-            <p class="panel-desc">All candidate records persisted in local / Render PostgreSQL database.</p>
+            <p class="panel-desc">Candidates associated with the active brand registry.</p>
           </div>
         </div>
 
-        <div id="candidates-table-container"></div>
+        <div class="table-responsive" id="candidates-table-container"></div>
       </div>
     </section>
 
-    <!-- TAB 3: LOOK-ALIKE LAB (REQUIREMENT D) -->
+    <!-- ============================================================
+         TAB 3: LOOK-ALIKE LAB (REQUIREMENT D)
+         ============================================================ -->
     <section id="tab-lab" class="hidden">
       <div class="panel">
         <div class="panel-header">
           <div>
             <h2 class="panel-title">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31L4.69 15.6A2 2 0 0 0 6.13 19h11.74a2 2 0 0 0 1.44-3.4L14 9.31V2"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31L4.69 15.6A2 2 0 0 0 6.13 19h11.74a2 2 0 0 0 1.44-3.4L14 9.31V2"/></svg>
               Look-alike Name Detection Engine (Requirement D)
             </h2>
             <p class="panel-desc">
@@ -1106,8 +1390,8 @@
           </div>
         </div>
 
-        <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
-          Try one of the hackathon judge test presets or enter custom strings:
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+          Click a hackathon judge preset or enter your own string:
         </p>
 
         <div class="preset-chips">
@@ -1123,7 +1407,7 @@
           <button class="preset-chip" onclick="applyLabPreset('Nike Official Help')">
             <span>🚨 Impersonation:</span> <b>Nike Official Help</b>
           </button>
-          <button class="preset-chip" onclick="applyLabPreset('Nikita Sports Store')" style="border-color:#86efac; background:#f0fdf4;">
+          <button class="preset-chip" onclick="applyLabPreset('Nikita Sports Store')" style="border-color:#86efac;">
             <span>🛡️ Benign Name:</span> <b>Nikita Sports Store (Zero False Positive)</b>
           </button>
         </div>
@@ -1140,7 +1424,7 @@
         </div>
 
         <button class="btn btn-primary" onclick="testLookalikeLab()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           Analyze String Vector
         </button>
 
@@ -1160,47 +1444,49 @@
             </div>
           </div>
 
-          <div style="margin-top: 14px;">
-            <h4 style="font-size: 13.5px; font-weight: 700; margin-bottom: 6px;">Classification & Attack Vectors Detected:</h4>
+          <div style="margin-top: 12px;">
+            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 6px;">Classification & Attack Vectors:</h4>
             <div id="lab-match-types" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;"></div>
           </div>
 
-          <div style="margin-top: 14px;">
-            <h4 style="font-size: 13.5px; font-weight: 700; margin-bottom: 6px;">Detailed Vector Signals:</h4>
+          <div style="margin-top: 12px;">
+            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 6px;">Detailed Vector Signals:</h4>
             <div id="lab-details-container"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TAB 4: EXECUTIVE AUDIT & REPORT -->
+    <!-- ============================================================
+         TAB 4: EXECUTIVE AUDIT & REPORT
+         ============================================================ -->
     <section id="tab-audit" class="hidden">
       <div class="panel">
         <div class="panel-header">
           <div>
             <h2 class="panel-title">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               Executive Security Posture Audit
             </h2>
-            <p class="panel-desc">Incident overview ready for SOC analysts and compliance export.</p>
+            <p class="panel-desc">Incident overview ready for SOC analysts, C-suite, and compliance export.</p>
           </div>
-          <div style="display:flex; gap:10px;">
-            <button class="btn btn-primary" onclick="exportCSV()">Download CSV Audit Report</button>
-            <button class="btn btn-secondary" onclick="window.print()">Print / PDF</button>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-primary btn-sm" onclick="exportCSV()">Download CSV</button>
+            <button class="btn btn-secondary btn-sm" onclick="window.print()">Print / PDF</button>
           </div>
         </div>
 
-        <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:20px; margin-bottom:20px;">
-          <h3 style="font-size:15px; font-weight:700; margin-bottom:8px;">Executive Summary</h3>
-          <p style="font-size:13.5px; color:#334155; line-height:1.6;" id="exec-summary-text">
+        <div style="background:var(--surface-subtle); border:1px solid var(--border); border-radius:var(--radius-md); padding:16px; margin-bottom:18px;">
+          <h3 style="font-size:14.5px; font-weight:700; margin-bottom:6px;">Executive Summary</h3>
+          <p style="font-size:13px; color:var(--text); line-height:1.6;" id="exec-summary-text">
             BrandShield AI evaluated candidates across external surfaces. Load demo data or execute a scan to generate an up-to-date executive threat report.
           </p>
         </div>
 
-        <div id="audit-table-container">
+        <div class="table-responsive" id="audit-table-container">
           <div class="empty-state">
             <h3>No Audit Events Yet</h3>
-            <p>Execute a threat scan to populate the compliance log.</p>
+            <p>Execute a threat scan on Tab 1 to populate the compliance log.</p>
           </div>
         </div>
       </div>
@@ -1215,9 +1501,12 @@
     </div>
   </div>
 
-  <!-- Toast Notification -->
+  <!-- Toast Notification Box -->
   <div id="toast-el" class="toast-box hidden"></div>
 
+  <!-- ============================================================
+       APPLICATION LOGIC & SCRIPTS
+       ============================================================ -->
   <script>
     let currentBrand = null;
     let currentCandidates = [];
@@ -1226,11 +1515,48 @@
 
     const $ = id => document.getElementById(id);
 
+    // ------------------------------------------------------------
+    // THEME MANAGEMENT (DARK / LIGHT MODE)
+    // ------------------------------------------------------------
+    function initTheme() {
+      const saved = localStorage.getItem('brandshield_theme');
+      if (saved) {
+        applyTheme(saved);
+      } else {
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        applyTheme(prefersDark ? 'dark' : 'light');
+      }
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('brandshield_theme', theme);
+      const icon = $('theme-icon');
+      const label = $('theme-label');
+      if (theme === 'dark') {
+        if (icon) icon.textContent = '☀️';
+        if (label) label.textContent = 'Light Mode';
+      } else {
+        if (icon) icon.textContent = '🌙';
+        if (label) label.textContent = 'Dark Mode';
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+      showToast(`Switched to ${current === 'dark' ? 'Light' : 'Dark'} mode`);
+    }
+
+    // ------------------------------------------------------------
+    // TOAST NOTIFICATIONS & API HELPER
+    // ------------------------------------------------------------
     function showToast(msg) {
       const el = $('toast-el');
       el.textContent = msg;
       el.classList.remove('hidden');
-      setTimeout(() => el.classList.add('hidden'), 2800);
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => el.classList.add('hidden'), 2800);
     }
 
     async function api(path, options = {}) {
@@ -1241,7 +1567,7 @@
         });
         const data = await res.json().catch(() => ({ detail: 'Invalid JSON response from server' }));
         if (!res.ok) {
-          throw new Error(data.detail || `Server returned error status ${res.status}`);
+          throw new Error(data.detail || `Server error: ${res.status}`);
         }
         return data;
       } catch (err) {
@@ -1249,6 +1575,9 @@
       }
     }
 
+    // ------------------------------------------------------------
+    // NAVIGATION & TAB SWITCHING
+    // ------------------------------------------------------------
     function switchTab(tabId, btn) {
       ['tab-threats', 'tab-brand', 'tab-lab', 'tab-audit'].forEach(id => {
         $(id).classList.toggle('hidden', id !== tabId);
@@ -1265,21 +1594,41 @@
       renderThreatList();
     }
 
+    // ------------------------------------------------------------
+    // INITIALIZATION & BRAND SYNCHRONIZATION
+    // ------------------------------------------------------------
     async function init() {
+      initTheme();
       try {
+        // Try to fetch active brand from server
         currentBrand = await api('/api/brand');
+        
+        // If server has no brand yet, check local storage cache
+        if (!currentBrand) {
+          const cached = localStorage.getItem('brandshield_brand');
+          if (cached) {
+            try {
+              const parsed = JSON.parse(cached);
+              currentBrand = await api('/api/brand', { method: 'POST', body: JSON.stringify(parsed) });
+            } catch(e) {}
+          }
+        }
+
         if (currentBrand) {
+          localStorage.setItem('brandshield_brand', JSON.stringify(currentBrand));
           fillBrandForm();
-          $('lab-brand-name').value = currentBrand.name || 'Nike';
+          updateBrandDisplays();
           await reloadCandidates();
           if (currentCandidates.length > 0) {
             await triggerRunScan();
           }
         } else {
-          showToast('Welcome to BrandShield AI! Click "⚡ Load Demo Data" to get started.');
+          // Pre-populate with default demo brand so form is never blank
+          loadBrandPreset('Nike');
+          showToast('Welcome to BrandShield AI! Click "⚡ Load Demo Data" or save your brand.');
         }
       } catch (err) {
-        showToast('Error connecting to backend: ' + err.message);
+        showToast('Connected to local offline mode: ' + err.message);
       }
     }
 
@@ -1291,8 +1640,42 @@
       $('brand-app').value = currentBrand.official_app || '';
       $('brand-publisher').value = currentBrand.official_publisher || '';
       $('brand-logo').value = currentBrand.logo || '';
+      markBrandSaved();
     }
 
+    function markBrandUnsaved() {
+      const pill = $('save-status-pill');
+      if (pill) {
+        pill.className = 'badge badge-medium';
+        pill.textContent = '● Unsaved Changes';
+      }
+    }
+
+    function markBrandSaved() {
+      const pill = $('save-status-pill');
+      if (pill) {
+        pill.className = 'badge badge-safe';
+        pill.textContent = '● Saved & Synced';
+      }
+    }
+
+    function updateBrandDisplays() {
+      if (!currentBrand) return;
+      const bname = currentBrand.name || 'Brand';
+      $('bar-brand-name').textContent = bname;
+      $('radar-brand-name').textContent = bname;
+      $('lab-brand-name').value = bname;
+
+      const metaParts = [];
+      if (currentBrand.official_social) metaParts.push(`Social: ${currentBrand.official_social}`);
+      if (currentBrand.official_app) metaParts.push(`App: ${currentBrand.official_app} (${currentBrand.official_publisher || 'Official'})`);
+      if (currentBrand.website) metaParts.push(`Web: ${currentBrand.website}`);
+      $('bar-brand-meta').textContent = metaParts.length ? ' • ' + metaParts.join(' • ') : '';
+    }
+
+    // ------------------------------------------------------------
+    // BRAND PROFILE SAVING (ROBUST WITH FEEDBACK)
+    // ------------------------------------------------------------
     async function saveBrandProfile() {
       const payload = {
         name: $('brand-name').value.trim(),
@@ -1302,20 +1685,91 @@
         official_publisher: $('brand-publisher').value.trim(),
         logo: $('brand-logo').value.trim()
       };
+
       if (!payload.name) {
         showToast('Please enter a Brand Name');
+        $('brand-name').focus();
         return;
       }
+
+      const btn = $('btn-save-brand');
+      btn.disabled = true;
+      btn.textContent = 'Saving Brand Profile...';
+
       try {
         currentBrand = await api('/api/brand', { method: 'POST', body: JSON.stringify(payload) });
-        $('lab-brand-name').value = currentBrand.name;
-        showToast('✅ Brand profile saved successfully');
+        localStorage.setItem('brandshield_brand', JSON.stringify(currentBrand));
+        
+        fillBrandForm();
+        updateBrandDisplays();
+        markBrandSaved();
+        showToast(`✅ Brand profile for "${currentBrand.name}" saved successfully!`);
+
         await reloadCandidates();
+
+        // If candidates are present, re-run threat scan immediately against new brand
+        if (currentCandidates.length > 0) {
+          await triggerRunScan();
+        }
       } catch (err) {
         showToast('Failed to save brand: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '💾 Save & Apply Brand Profile';
       }
     }
 
+    // Quick presets for testing different brands in 1 click
+    const BRAND_PRESETS = {
+      'Nike': {
+        name: 'Nike',
+        website: 'https://www.nike.com',
+        official_social: '@nike, @nikeindia',
+        official_app: 'Nike',
+        official_publisher: 'Nike, Inc.',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg'
+      },
+      'Adidas': {
+        name: 'Adidas',
+        website: 'https://www.adidas.com',
+        official_social: '@adidas, @adidasoriginals',
+        official_app: 'adidas: Shop Shoes & Clothes',
+        official_publisher: 'adidas',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg'
+      },
+      'Apple': {
+        name: 'Apple',
+        website: 'https://www.apple.com',
+        official_social: '@apple, @applesupport',
+        official_app: 'Apple Store',
+        official_publisher: 'Apple',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg'
+      },
+      'Netflix': {
+        name: 'Netflix',
+        website: 'https://www.netflix.com',
+        official_social: '@netflix, @netflixhelps',
+        official_app: 'Netflix',
+        official_publisher: 'Netflix, Inc.',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg'
+      }
+    };
+
+    function loadBrandPreset(name) {
+      const p = BRAND_PRESETS[name];
+      if (!p) return;
+      $('brand-name').value = p.name;
+      $('brand-website').value = p.website;
+      $('brand-social').value = p.official_social;
+      $('brand-app').value = p.official_app;
+      $('brand-publisher').value = p.official_publisher;
+      $('brand-logo').value = p.logo;
+      saveBrandProfile();
+    }
+
+    // ------------------------------------------------------------
+    // CANDIDATE MANAGEMENT & INGESTION
+    // ------------------------------------------------------------
     async function reloadCandidates() {
       if (!currentBrand) return;
       try {
@@ -1330,14 +1784,15 @@
 
     async function triggerSeedDemo() {
       try {
-        showToast('⚡ Seeding Nike demo assets and candidate vectors...');
+        showToast('⚡ Loading judge-ready Nike demo dataset...');
         const res = await api('/api/demo/seed', { method: 'POST' });
         currentBrand = res.brand;
+        localStorage.setItem('brandshield_brand', JSON.stringify(currentBrand));
         fillBrandForm();
-        $('lab-brand-name').value = currentBrand.name;
+        updateBrandDisplays();
         await reloadCandidates();
         await triggerRunScan();
-        showToast('✅ Demo loaded & threat scan completed!');
+        showToast('✅ Demo loaded & Threat Scan completed!');
       } catch (err) {
         showToast('Failed to seed demo: ' + err.message);
       }
@@ -1380,12 +1835,12 @@
         currentScanResults = scanRes.results || [];
         updateKpis(currentScanResults);
         renderThreatList();
-        showToast(`Scan complete: ${currentScanResults.length} candidates evaluated.`);
+        showToast(`Threat Scan complete: ${currentScanResults.length} candidates evaluated.`);
       } catch (err) {
         showToast('Scan failed: ' + err.message);
       } finally {
         scanBtn.disabled = false;
-        scanBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg> Execute Threat Scan';
+        scanBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg> Execute Threat Scan';
       }
     }
 
@@ -1408,6 +1863,9 @@
       $('count-safe').textContent = safe;
     }
 
+    // ------------------------------------------------------------
+    // THREAT MONITOR RENDERING & DETAILS MODAL
+    // ------------------------------------------------------------
     function renderThreatList() {
       const container = $('threat-list-container');
       const query = ($('search-threats').value || '').toLowerCase().trim();
@@ -1429,7 +1887,7 @@
           <div class="empty-state">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" color="#94a3b8"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             <h3>No threats matching filter</h3>
-            <p>Try switching the severity filter or resetting search terms.</p>
+            <p>Try switching the severity filter or clearing search keywords.</p>
           </div>`;
         return;
       }
@@ -1470,7 +1928,7 @@
 
               <div class="score-meter">
                 <div class="score-meter-num" style="color: ${getRiskColor(level)}">
-                  ${item.risk_score}<span style="font-size:12px; color:var(--text-light); font-weight:500;">/100</span>
+                  ${item.risk_score}<span style="font-size:11px; color:var(--text-light); font-weight:500;">/100</span>
                 </div>
                 <div class="score-bar-wrap">
                   <div class="score-bar-fill ${fillClass}" style="width: ${item.risk_score}%"></div>
@@ -1504,19 +1962,19 @@
       const modal = $('detail-modal');
 
       $('modal-content').innerHTML = `
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; gap:12px;">
           <div>
             <span class="badge badge-${item.risk_level.toLowerCase()}">${item.risk_level} RISK</span>
-            <h2 style="font-size:20px; font-weight:800; margin-top:6px;">${esc(c.name)}</h2>
-            <p style="font-size:13px; color:var(--text-muted);">${esc(c.type.toUpperCase())} · ${esc(c.identifier || '')} · Publisher: ${esc(c.publisher || 'Unknown')}</p>
+            <h2 style="font-size:18px; font-weight:800; margin-top:6px; word-break:break-word;">${esc(c.name)}</h2>
+            <p style="font-size:12.5px; color:var(--text-muted);">${esc(c.type.toUpperCase())} · ${esc(c.identifier || '')} · Publisher: ${esc(c.publisher || 'Unknown')}</p>
           </div>
-          <div style="text-align:right;">
-            <div style="font-size:32px; font-weight:800; color:${getRiskColor(item.risk_level)}">${item.risk_score}<span style="font-size:15px; color:var(--text-muted);">/100</span></div>
-            <span style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted);">Impersonation Score</span>
+          <div style="text-align:right; flex-shrink:0;">
+            <div style="font-size:28px; font-weight:800; color:${getRiskColor(item.risk_level)}">${item.risk_score}<span style="font-size:13px; color:var(--text-muted);">/100</span></div>
+            <span style="font-size:10.5px; font-weight:700; text-transform:uppercase; color:var(--text-muted);">Impersonation Score</span>
           </div>
         </div>
 
-        <div class="lab-stats-grid" style="margin-top:16px;">
+        <div class="lab-stats-grid" style="margin-top:14px;">
           <div class="lab-stat">
             <span>Name Similarity</span>
             <b>${item.name_similarity}%</b>
@@ -1532,17 +1990,17 @@
         </div>
 
         ${look.is_lookalike ? `
-          <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:12px 14px; margin: 16px 0;">
-            <div style="font-size:13px; font-weight:700; color:#ea580c; display:flex; align-items:center; gap:6px;">
+          <div style="background:var(--high-bg); border:1px solid var(--high-border); border-radius:8px; padding:10px 12px; margin: 14px 0;">
+            <div style="font-size:12.5px; font-weight:700; color:var(--high-text); display:flex; align-items:center; gap:6px;">
               ⚠️ Look-alike Vector Classification
             </div>
-            <div style="margin-top:6px; font-size:12.5px; color:#431407;">
+            <div style="margin-top:4px; font-size:12px; color:var(--text);">
               ${(look.match_types || []).join(' • ')}
             </div>
           </div>
         ` : ''}
 
-        <h3 style="font-size:14px; font-weight:700; margin:16px 0 6px;">Why This Was Flagged (Explainable AI Engine):</h3>
+        <h3 style="font-size:13.5px; font-weight:700; margin:14px 0 6px;">Why This Was Flagged (Explainable Engine):</h3>
         <ul class="evidence-list">
           ${item.evidence.map(e => `
             <li class="evidence-item">
@@ -1552,9 +2010,9 @@
           `).join('')}
         </ul>
 
-        <div style="background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:14px; margin-top:18px;">
-          <h4 style="font-size:12.5px; font-weight:700; color:var(--text); text-transform:uppercase; letter-spacing:0.04em;">SOC Recommended Remediation:</h4>
-          <p style="font-size:13px; color:#334155; margin-top:4px;">
+        <div style="background:var(--surface-subtle); border:1px solid var(--border); border-radius:8px; padding:12px; margin-top:16px;">
+          <h4 style="font-size:12px; font-weight:700; color:var(--text); text-transform:uppercase; letter-spacing:0.04em;">SOC Recommended Remediation:</h4>
+          <p style="font-size:12.5px; color:var(--text-muted); margin-top:3px;">
             ${item.official_match ? 'No action needed. Asset is verified official brand identity.' : 
               item.risk_level === 'CRITICAL' ? 'Immediate Action: Generate takedown bundle, notify platform abuse desk for scam domain/account seizure, and issue customer warning.' :
               item.risk_level === 'HIGH' ? 'High Priority: Submit DMCA trademark violation notice and flag account for impersonation monitoring.' :
@@ -1570,7 +2028,9 @@
       $('detail-modal').classList.add('hidden');
     }
 
-    // Candidate Management
+    // ------------------------------------------------------------
+    // CANDIDATE REGISTRY TABLE
+    // ------------------------------------------------------------
     function renderCandidatesTable() {
       const container = $('candidates-table-container');
       if (!currentCandidates.length) {
@@ -1583,28 +2043,28 @@
       }
 
       container.innerHTML = `
-        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+        <table class="data-table">
           <thead>
-            <tr style="border-bottom:2px solid var(--border); text-align:left; color:var(--text-muted); font-size:11.5px; text-transform:uppercase;">
-              <th style="padding:10px 8px;">Type</th>
-              <th style="padding:10px 8px;">Candidate Name</th>
-              <th style="padding:10px 8px;">Handle / ID</th>
-              <th style="padding:10px 8px;">Publisher</th>
-              <th style="padding:10px 8px;">Source</th>
-              <th style="padding:10px 8px; text-align:right;">Actions</th>
+            <tr>
+              <th>Type</th>
+              <th>Candidate Name</th>
+              <th>Handle / ID</th>
+              <th>Publisher</th>
+              <th>Source</th>
+              <th style="text-align:right;">Actions</th>
             </tr>
           </thead>
           <tbody>
             ${currentCandidates.map(c => `
-              <tr style="border-bottom:1px solid var(--border);">
-                <td style="padding:10px 8px;">
+              <tr>
+                <td>
                   <span class="badge ${c.type==='app'?'badge-medium':'badge-safe'}" style="font-size:10px;">${c.type.toUpperCase()}</span>
                 </td>
-                <td style="padding:10px 8px; font-weight:600;">${esc(c.name)}</td>
-                <td style="padding:10px 8px; font-family:monospace; color:#475569;">${esc(c.identifier||'-')}</td>
-                <td style="padding:10px 8px;">${esc(c.publisher||'-')}</td>
-                <td style="padding:10px 8px; color:var(--text-muted);">${esc(c.source)}</td>
-                <td style="padding:10px 8px; text-align:right;">
+                <td style="font-weight:600;">${esc(c.name)}</td>
+                <td style="font-family:monospace; color:var(--text-muted);">${esc(c.identifier||'-')}</td>
+                <td>${esc(c.publisher||'-')}</td>
+                <td style="color:var(--text-muted);">${esc(c.source)}</td>
+                <td style="text-align:right;">
                   <button class="btn btn-secondary btn-sm" onclick="editCandidatePrompt(${c.id})">Edit</button>
                   <button class="btn btn-danger-outline btn-sm" onclick="deleteCandidateAction(${c.id})">Delete</button>
                 </td>
@@ -1732,14 +2192,16 @@
       }
     }
 
-    // Look-alike Lab Interactive Functionality
+    // ------------------------------------------------------------
+    // LOOK-ALIKE LAB (REQUIREMENT D)
+    // ------------------------------------------------------------
     function applyLabPreset(val) {
       $('lab-cand-name').value = val;
       testLookalikeLab();
     }
 
     async function testLookalikeLab() {
-      const official = $('lab-brand-name').value.trim() || 'Nike';
+      const official = $('lab-brand-name').value.trim() || (currentBrand ? currentBrand.name : 'Nike');
       const candidate = $('lab-cand-name').value.trim();
       if (!candidate) {
         showToast('Please enter a candidate name to analyze');
@@ -1766,16 +2228,16 @@
         const d = res.details || {};
         let detailsHtml = '';
         if (d.homoglyphs && d.homoglyphs.length) {
-          detailsHtml += `<p style="font-size:12.5px; margin-bottom:4px;"><b>Unicode Homoglyphs Detected:</b> <span class="code-box">${d.homoglyphs.join(', ')}</span></p>`;
+          detailsHtml += `<p style="font-size:12px; margin-bottom:4px;"><b>Unicode Homoglyphs Detected:</b> <span class="code-box">${d.homoglyphs.join(', ')}</span></p>`;
         }
         if (d.leet_substitutions && d.leet_substitutions.length) {
-          detailsHtml += `<p style="font-size:12.5px; margin-bottom:4px;"><b>Leetspeak Substitutions:</b> <span class="code-box">${d.leet_substitutions.join(', ')}</span></p>`;
+          detailsHtml += `<p style="font-size:12px; margin-bottom:4px;"><b>Leetspeak Substitutions:</b> <span class="code-box">${d.leet_substitutions.join(', ')}</span></p>`;
         }
         if (d.affixes_detected && d.affixes_detected.length) {
-          detailsHtml += `<p style="font-size:12.5px; margin-bottom:4px;"><b>Suspicious Affix Terms:</b> <span class="code-box">${d.affixes_detected.join(', ')}</span></p>`;
+          detailsHtml += `<p style="font-size:12px; margin-bottom:4px;"><b>Suspicious Impersonation Keywords:</b> <span class="code-box">${d.affixes_detected.join(', ')}</span></p>`;
         }
         if (!detailsHtml) {
-          detailsHtml = `<p style="font-size:12.5px; color:var(--text-muted);">No acute character manipulation or spoofing patterns detected.</p>`;
+          detailsHtml = `<p style="font-size:12px; color:var(--text-muted);">No acute character manipulation or spoofing patterns detected.</p>`;
         }
         $('lab-details-container').innerHTML = detailsHtml;
 
@@ -1784,7 +2246,9 @@
       }
     }
 
-    // Executive Audit Report Tab
+    // ------------------------------------------------------------
+    // EXECUTIVE AUDIT REPORT
+    // ------------------------------------------------------------
     function renderAuditReport() {
       const container = $('audit-table-container');
       const summaryText = $('exec-summary-text');
@@ -1810,24 +2274,24 @@
       `;
 
       container.innerHTML = `
-        <table style="width:100%; border-collapse:collapse; font-size:13px; margin-top:16px;">
+        <table class="data-table">
           <thead>
-            <tr style="border-bottom:2px solid var(--border); text-align:left; color:var(--text-muted); font-size:11.5px; text-transform:uppercase;">
-              <th style="padding:10px 8px;">Candidate</th>
-              <th style="padding:10px 8px;">Channel</th>
-              <th style="padding:10px 8px;">Risk Score</th>
-              <th style="padding:10px 8px;">Status</th>
-              <th style="padding:10px 8px;">Key Evidence Finding</th>
+            <tr>
+              <th>Candidate</th>
+              <th>Channel</th>
+              <th>Risk Score</th>
+              <th>Status</th>
+              <th>Key Evidence Finding</th>
             </tr>
           </thead>
           <tbody>
             ${currentScanResults.map(r => `
-              <tr style="border-bottom:1px solid var(--border);">
-                <td style="padding:10px 8px; font-weight:600;">${esc(r.candidate.name)}</td>
-                <td style="padding:10px 8px; text-transform:uppercase; font-size:11px;">${esc(r.candidate.type)}</td>
-                <td style="padding:10px 8px; font-weight:700; color:${getRiskColor(r.risk_level)}">${r.risk_score}/100</td>
-                <td style="padding:10px 8px;"><span class="badge badge-${r.risk_level.toLowerCase()}">${r.risk_level}</span></td>
-                <td style="padding:10px 8px; color:#475569; font-size:12px;">${esc(r.evidence[0] || 'Clean')}</td>
+              <tr>
+                <td style="font-weight:600;">${esc(r.candidate.name)}</td>
+                <td style="text-transform:uppercase; font-size:11px;">${esc(r.candidate.type)}</td>
+                <td style="font-weight:700; color:${getRiskColor(r.risk_level)}">${r.risk_score}/100</td>
+                <td><span class="badge badge-${r.risk_level.toLowerCase()}">${r.risk_level}</span></td>
+                <td style="color:var(--text-muted); font-size:12px;">${esc(r.evidence[0] || 'Clean')}</td>
               </tr>
             `).join('')}
           </tbody>
@@ -1845,7 +2309,7 @@
       }[m]));
     }
 
-    // Initialize application on page loads
+    // Launch on load
     window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
