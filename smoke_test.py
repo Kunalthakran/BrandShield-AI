@@ -77,4 +77,56 @@ assert csv_res.status_code == 200
 assert 'Candidate ID,Type,Name' in csv_res.text
 print("PASS 8: CSV Audit report generation -> OK")
 
-print("\n[SUCCESS] ALL SMOKE TESTS PASSED - HACKATHON MVP IS 100% OPERATIONAL!")
+# 9. Brand Profile Persistence & Singleton Tests
+# Brand Creation & Refresh
+brand_payload = {
+    'name': 'Adidas',
+    'website': 'https://adidas.com',
+    'official_social': '@adidas',
+    'official_app': 'Adidas App',
+    'official_publisher': 'Adidas AG',
+    'logo': 'https://adidas.com/logo.png'
+}
+save_res = client.post('/api/brand', json=brand_payload)
+assert save_res.status_code == 200
+saved_brand = save_res.json()
+assert saved_brand['name'] == 'Adidas'
+assert saved_brand['id'] is not None
+brand_id = saved_brand['id']
+
+get_res = client.get('/api/brand')
+assert get_res.status_code == 200
+refreshed = get_res.json()
+assert refreshed['id'] == brand_id
+assert refreshed['name'] == 'Adidas'
+print("PASS 9: Brand profile persistence & refresh retrieval -> OK")
+
+# Update singleton in-place
+update_payload = {
+    'name': 'Adidas Official',
+    'website': 'https://adidas.com/global',
+    'official_social': '@adidasoriginals',
+    'official_app': 'Adidas Confirmed',
+    'official_publisher': 'Adidas AG',
+    'logo': ''
+}
+update_res = client.post('/api/brand', json=update_payload)
+assert update_res.status_code == 200
+assert update_res.json()['id'] == brand_id
+assert update_res.json()['name'] == 'Adidas Official'
+print("PASS 10: Brand profile update maintains singleton record -> OK")
+
+# Rapid saves maintain singleton
+for i in range(1, 6):
+    rapid_res = client.post('/api/brand', json={'name': f'Brand V{i}'})
+    assert rapid_res.status_code == 200
+    assert rapid_res.json()['id'] == brand_id
+print("PASS 11: 5 rapid consecutive saves maintain singleton row -> OK")
+
+# Validation rejection for blank name
+bad_res = client.post('/api/brand', json={'name': '   '})
+assert bad_res.status_code == 422
+print("PASS 12: Blank brand name rejected with 422 validation error -> OK")
+
+print("\n[SUCCESS] ALL SMOKE & PERSISTENCE TESTS PASSED - HACKATHON MVP IS 100% OPERATIONAL!")
+

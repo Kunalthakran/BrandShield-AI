@@ -1,4 +1,4 @@
-import os, re, json, csv, io
+import os, re, json, csv, io, logging
 from datetime import datetime
 from typing import Optional, List
 from urllib.parse import urlparse
@@ -9,10 +9,14 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, PlainTextResponse, Response
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from rapidfuzz import fuzz
 from sqlalchemy import create_engine, String, Text, Integer, Float, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker, Session
+
+# Configure structured application logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(name)s: %(message)s')
+logger = logging.getLogger("brandshield.api")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_DB_FILE = os.path.join(BASE_DIR, 'brandshield.db').replace('\\', '/')
@@ -21,6 +25,12 @@ if DATABASE_URL.startswith('postgres://'):
     DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql+psycopg://', 1)
 elif DATABASE_URL.startswith('postgresql://') and not DATABASE_URL.startswith('postgresql+psycopg://'):
     DATABASE_URL = DATABASE_URL.replace('postgresql://', 'postgresql+psycopg://', 1)
+
+if os.getenv('DATABASE_URL'):
+    db_type = 'PostgreSQL' if 'postgres' in DATABASE_URL.lower() else 'Custom DB'
+    logger.info(f"Database configured from environment variable: {db_type}")
+else:
+    logger.info("DATABASE_URL not set in environment; using local SQLite fallback")
 
 connect_args = {'check_same_thread': False} if DATABASE_URL.startswith('sqlite') else {}
 engine = create_engine(DATABASE_URL, connect_args=connect_args, pool_pre_ping=True)
@@ -101,12 +111,20 @@ def db():
 
 # Pydantic Schemas
 class BrandIn(BaseModel):
-    name: str = Field(min_length=1, max_length=160)
-    website: str = ''
-    logo: str = ''
-    official_social: str = ''
-    official_app: str = ''
-    official_publisher: str = ''
+    name: str = Field(..., min_length=1, max_length=160)
+    website: Optional[str] = ''
+    logo: Optional[str] = ''
+    official_social: Optional[str] = ''
+    official_app: Optional[str] = ''
+    official_publisher: Optional[str] = ''
+
+    @field_validator('name')
+    @classmethod
+    def validate_name(cls, v: str) -> str:
+        s = (v or '').strip()
+        if not s:
+            raise ValueError('Brand name cannot be blank or whitespace')
+        return s
 
 class CandidateIn(BaseModel):
     type: str
@@ -402,27 +420,67 @@ def health():
 
 @app.get('/api/brand')
 def get_brand(s: Session = Depends(db)):
-    b = s.query(Brand).first()
+    logger.info("GET /api/brand requested")
+    b = s.query(Brand).order_by(Brand.id.asc()).first()
     if not b:
+        logger.info("GET /api/brand: No brand record found in database")
         return None
+    logger.info(f"GET /api/brand: Returning brand id={b.id}, name='{b.name}'")
     return brand_dict(b)
 
 @app.post('/api/brand')
 @app.put('/api/brand')
 def save_brand(x: BrandIn, s: Session = Depends(db)):
-    b = s.query(Brand).first()
-    if not b:
-        b = Brand(**x.model_dump())
-        s.add(b)
-    else:
-        for k, v in x.model_dump().items():
-            setattr(b, k, v)
-    s.commit()
-    s.refresh(b)
-    return brand_dict(b)
+    logger.info(f"SAVE /api/brand incoming request: name='{x.name}', website='{x.website}'")
+    try:
+        # Guarantee singleton: retrieve primary brand record ordered by ID
+        b = s.query(Brand).order_by(Brand.id.asc()).first()
+        op_type = "UPDATE" if b else "CREATE"
+
+        if not b:
+            b = Brand(
+                name=x.name.strip(),
+                website=(x.website or '').strip(),
+                logo=(x.logo or '').strip(),
+                official_social=(x.official_social or '').strip(),
+                official_app=(x.official_app or '').strip(),
+                official_publisher=(x.official_publisher or '').strip()
+            )
+            s.add(b)
+            s.flush()
+            logger.info(f"DB operation: CREATE brand id={b.id}")
+        else:
+            b.name = x.name.strip()
+            b.website = (x.website or '').strip()
+            b.logo = (x.logo or '').strip()
+            b.official_social = (x.official_social or '').strip()
+            b.official_app = (x.official_app or '').strip()
+            b.official_publisher = (x.official_publisher or '').strip()
+            logger.info(f"DB operation: UPDATE brand id={b.id}")
+
+        # Duplicate prevention: prune any accidental duplicate rows
+        duplicates = s.query(Brand).filter(Brand.id != b.id).all()
+        if duplicates:
+            logger.warning(f"Pruning {len(duplicates)} duplicate brand records to ensure singleton invariant")
+            for dup in duplicates:
+                s.delete(dup)
+
+        s.commit()
+        s.refresh(b)
+        logger.info(f"Successful commit: brand id={b.id}, name='{b.name}' saved to PostgreSQL")
+        return brand_dict(b)
+    except Exception as exc:
+        s.rollback()
+        logger.error(f"Database error saving brand profile: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Database error occurred while saving brand profile.")
 
 @app.get('/api/candidates')
-def get_candidates(brand_id: int, s: Session = Depends(db)):
+def get_candidates(brand_id: Optional[int] = None, s: Session = Depends(db)):
+    if brand_id is None:
+        b = s.query(Brand).order_by(Brand.id.asc()).first()
+        if not b:
+            return []
+        brand_id = b.id
     cs = s.query(Candidate).filter_by(brand_id=brand_id).order_by(Candidate.id.desc()).all()
     return [cand_dict(c) for c in cs]
 
@@ -582,7 +640,7 @@ DEMO_CANDIDATES = [
 @app.post('/api/demo/seed')
 def seed_demo_data(s: Session = Depends(db)):
     """Pre-seeds official brand Nike and 9 realistic candidates covering all challenge aspects."""
-    b = s.query(Brand).first()
+    b = s.query(Brand).order_by(Brand.id.asc()).first()
     if not b:
         b = Brand(**DEMO_BRAND)
         s.add(b)
@@ -591,6 +649,11 @@ def seed_demo_data(s: Session = Depends(db)):
         for k, v in DEMO_BRAND.items():
             setattr(b, k, v)
         s.flush()
+
+    # Enforce exactly one brand in DB: prune any rogue duplicate rows if they exist
+    duplicates = s.query(Brand).filter(Brand.id != b.id).all()
+    for dup in duplicates:
+        s.delete(dup)
 
     # Clear previous candidates and detections to provide a clean state
     s.query(Detection).delete()
@@ -613,7 +676,7 @@ def seed_demo_data(s: Session = Depends(db)):
 @app.post('/api/demo/reset')
 def reset_demo_data(s: Session = Depends(db)):
     """Cleans all candidates, detections, and scans."""
-    b = s.query(Brand).first()
+    b = s.query(Brand).order_by(Brand.id.asc()).first()
     if b:
         s.query(Detection).delete()
         s.query(Scan).delete()
@@ -625,7 +688,7 @@ def reset_demo_data(s: Session = Depends(db)):
 @app.get('/api/export.csv')
 def export_csv_report(brand_id: Optional[int] = None, s: Session = Depends(db)):
     """Exports latest candidate scan assessment report as CSV."""
-    b = s.get(Brand, brand_id) if brand_id else s.query(Brand).first()
+    b = s.get(Brand, brand_id) if brand_id else s.query(Brand).order_by(Brand.id.asc()).first()
     if not b:
         raise HTTPException(404, 'No brand profile configured.')
 

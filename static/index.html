@@ -1595,27 +1595,17 @@
     }
 
     // ------------------------------------------------------------
+    // ------------------------------------------------------------
     // INITIALIZATION & BRAND SYNCHRONIZATION
     // ------------------------------------------------------------
     async function init() {
       initTheme();
       try {
-        // Try to fetch active brand from server
-        currentBrand = await api('/api/brand');
+        // Fetch authoritative protected brand from PostgreSQL
+        const brand = await api('/api/brand');
         
-        // If server has no brand yet, check local storage cache
-        if (!currentBrand) {
-          const cached = localStorage.getItem('brandshield_brand');
-          if (cached) {
-            try {
-              const parsed = JSON.parse(cached);
-              currentBrand = await api('/api/brand', { method: 'POST', body: JSON.stringify(parsed) });
-            } catch(e) {}
-          }
-        }
-
-        if (currentBrand) {
-          localStorage.setItem('brandshield_brand', JSON.stringify(currentBrand));
+        if (brand && brand.id && brand.name) {
+          currentBrand = brand;
           fillBrandForm();
           updateBrandDisplays();
           await reloadCandidates();
@@ -1623,12 +1613,18 @@
             await triggerRunScan();
           }
         } else {
-          // Pre-populate with default demo brand so form is never blank
-          loadBrandPreset('Nike');
-          showToast('Welcome to BrandShield AI! Click "⚡ Load Demo Data" or save your brand.');
+          currentBrand = null;
+          updateBrandDisplays();
+          markBrandUnsaved();
+          const pill = $('save-status-pill');
+          if (pill) {
+            pill.className = 'badge badge-medium';
+            pill.textContent = '● Not Configured';
+          }
         }
       } catch (err) {
-        showToast('Connected to local offline mode: ' + err.message);
+        console.error('Error fetching brand profile on initialization:', err);
+        showToast('Unable to connect to server: ' + err.message);
       }
     }
 
@@ -1660,7 +1656,12 @@
     }
 
     function updateBrandDisplays() {
-      if (!currentBrand) return;
+      if (!currentBrand) {
+        $('bar-brand-name').textContent = 'None';
+        $('radar-brand-name').textContent = 'Brand';
+        $('bar-brand-meta').textContent = ' • Configure brand profile in tab below';
+        return;
+      }
       const bname = currentBrand.name || 'Brand';
       $('bar-brand-name').textContent = bname;
       $('radar-brand-name').textContent = bname;
@@ -1674,11 +1675,25 @@
     }
 
     // ------------------------------------------------------------
-    // BRAND PROFILE SAVING (ROBUST WITH FEEDBACK)
+    // BRAND PROFILE SAVING (ROBUST WITH FEEDBACK & PERSISTENCE)
     // ------------------------------------------------------------
+    let isSavingBrand = false;
+
     async function saveBrandProfile() {
+      // Prevent concurrent or duplicate rapid save triggers
+      if (isSavingBrand) {
+        return;
+      }
+
+      const nameVal = $('brand-name').value.trim();
+      if (!nameVal) {
+        showToast('Please enter a Brand Name');
+        $('brand-name').focus();
+        return;
+      }
+
       const payload = {
-        name: $('brand-name').value.trim(),
+        name: nameVal,
         website: $('brand-website').value.trim(),
         official_social: $('brand-social').value.trim(),
         official_app: $('brand-app').value.trim(),
@@ -1686,36 +1701,43 @@
         logo: $('brand-logo').value.trim()
       };
 
-      if (!payload.name) {
-        showToast('Please enter a Brand Name');
-        $('brand-name').focus();
-        return;
-      }
-
       const btn = $('btn-save-brand');
+      const originalText = btn.innerHTML;
+      isSavingBrand = true;
       btn.disabled = true;
-      btn.textContent = 'Saving Brand Profile...';
+      btn.textContent = 'Saving...';
 
       try {
-        currentBrand = await api('/api/brand', { method: 'POST', body: JSON.stringify(payload) });
-        localStorage.setItem('brandshield_brand', JSON.stringify(currentBrand));
-        
+        const saved = await api('/api/brand', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        if (!saved || !saved.id) {
+          throw new Error('Server returned invalid brand data.');
+        }
+
+        // Update application state strictly using the returned database record
+        currentBrand = saved;
         fillBrandForm();
         updateBrandDisplays();
         markBrandSaved();
-        showToast(`✅ Brand profile for "${currentBrand.name}" saved successfully!`);
+        showToast('Saved successfully');
 
         await reloadCandidates();
 
-        // If candidates are present, re-run threat scan immediately against new brand
+        // If candidates are present, re-run threat scan against updated brand identity
         if (currentCandidates.length > 0) {
           await triggerRunScan();
         }
       } catch (err) {
-        showToast('Failed to save brand: ' + err.message);
+        console.error('Database error saving brand profile:', err);
+        // Do NOT clear the form on error - preserve user input
+        showToast('Unable to save brand profile. Please try again.');
       } finally {
+        isSavingBrand = false;
         btn.disabled = false;
-        btn.textContent = '💾 Save & Apply Brand Profile';
+        btn.innerHTML = originalText || '💾 Save & Apply Brand Profile';
       }
     }
 
@@ -1764,7 +1786,8 @@
       $('brand-app').value = p.official_app;
       $('brand-publisher').value = p.official_publisher;
       $('brand-logo').value = p.logo;
-      saveBrandProfile();
+      markBrandUnsaved();
+      showToast(`Loaded "${p.name}" preset. Click "Save & Apply Brand Profile" to persist.`);
     }
 
     // ------------------------------------------------------------
@@ -1787,7 +1810,6 @@
         showToast('⚡ Loading judge-ready Nike demo dataset...');
         const res = await api('/api/demo/seed', { method: 'POST' });
         currentBrand = res.brand;
-        localStorage.setItem('brandshield_brand', JSON.stringify(currentBrand));
         fillBrandForm();
         updateBrandDisplays();
         await reloadCandidates();
